@@ -2,8 +2,8 @@
 cd external/wxWidgets/
 mkdir gtk-build
 cd gtk-build
-mkdir instalationresult
-../configure --with-opengl --enable-unicode --enable-monolithic --prefix=./instalationresult
+printf installdir
+../configure --with-opengl --enable-unicode --prefix=/usr
 make -j4
 make install
 

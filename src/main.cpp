@@ -42,7 +42,7 @@ bool MyApp::OnInit()
 {
 	if (!wxApp::OnInit())
 		return false;
-	MainFrameWrapper *frame = new MainFrameWrapper(nullptr);
+    MainFrameWrapper *frame = new MainFrameWrapper(false);
 
 	frame->Show(true);
 	return true;
