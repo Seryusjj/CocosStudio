@@ -1,9 +1,40 @@
 // wxWidgets "Hello world" Program
 // For compilers that support precompilation, includes "wx/wx.h".
 
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+
+// Windows Header Files:
+#include <windows.h>
+#include <tchar.h>
+
+// C RunTime Header Files/#include "platform/CCStdC.h"
+
+#define ssize_t SSIZE_T
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#include <Windows.h>
+#include "cocos2d.h"
+#undef ssize_t
+
+#define ssize_t wxInt32
 #include "MyApp.h"
+#undef ssize_t
 
 wxIMPLEMENT_APP(MyApp);
+
+int WINAPI _tWinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPTSTR    lpCmdLine,
+	int       nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	// create the application instance
+	//AppDelegate app;
+	//return Application::getInstance()->run();
+	return 0;
+}
 
 CocosGLContext& MyApp::GetContext(wxGLCanvas *canvas, bool useStereo)
 {
@@ -42,7 +73,7 @@ bool MyApp::OnInit()
 {
 	if (!wxApp::OnInit())
 		return false;
-    MainFrameWrapper *frame = new MainFrameWrapper(false);
+	MainFrameWrapper *frame = new MainFrameWrapper(false);
 
 	frame->Show(true);
 	return true;
