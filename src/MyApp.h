@@ -1,7 +1,8 @@
 #pragma once
-#include <wx/wx.h>
+#include "stdafx.h"
 #include "MainFrameWrapper.h"
-#include <functional>
+#include "CocosGLCanvas.h"
+#include "CocosGLContext.h"
 
 // Define a new application type
 class MyApp : public wxApp
