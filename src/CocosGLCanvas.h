@@ -3,81 +3,39 @@
 
 #include "stdafx.h"
 
-class CocosGLCanvas : public wxGLCanvas
+class CocosGLCanvas : public wxGLCanvas, public cocos2d::GLView
 {
 public:
+	int  _retinaFactor;//1 or 0
+	float _frameZoomFactor;
 	CocosGLCanvas(wxWindow *parent, int *attribList = NULL);
+	bool InitGl();
+	/* override functions */
+	virtual bool isOpenGLReady() override;
+	virtual void end() override;
+	virtual void swapBuffers() override;
+	virtual void setFrameSize(float width, float height) override;
+	virtual void setIMEKeyboardState(bool bOpen) override;
+
+	virtual void setViewPortInPoints(float x, float y, float w, float h) override;
+	virtual void setScissorInPoints(float x, float y, float w, float h) override;
+	virtual cocos2d::Rect getScissorRect() const override;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	HWND getWin32Window() { return GetHWND(); }
+#endif //(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 private:
+	wxGLContext* m_context;
 	void OnPaint(wxPaintEvent& event);
-	void Spin(float xSpin, float ySpin);
+
 	void OnKeyDown(wxKeyEvent& event);
-	void OnSpinTimer(wxTimerEvent& WXUNUSED(event));
+	void OnDrawTimer(wxTimerEvent& WXUNUSED(event));
+	bool InitGlew();
 
-	// angles of rotation around x- and y- axis
-	float m_xangle,
-		m_yangle;
-
-	wxTimer m_spinTimer;
-	bool m_useStereo,
-		m_stereoWarningAlreadyDisplayed;
+	wxTimer _drawTimer;
 
 	wxDECLARE_EVENT_TABLE();
-};
-
-class ccwxGLView : public cocos2d::GLView
-{
-	CocosGLCanvas* mGLCanvas;
-
-public:
-	ccwxGLView(CocosGLCanvas* canvas) {
-		setGLCanvas(canvas);
-	}
-
-	virtual ~ccwxGLView(void) {}
-
-	static ccwxGLView* create(CocosGLCanvas* canvas) {
-		auto ret = new (std::nothrow) ccwxGLView(canvas);
-		if (ret) {
-			ret->autorelease();
-			return ret;
-		}
-		return nullptr;
-	}
-
-	void setGLCanvas(CocosGLCanvas* canvas) {
-		mGLCanvas = canvas;
-	}
-	CocosGLCanvas* getGLCanvas() {
-		return mGLCanvas;
-	}
-
-	HWND getWin32Window() {
-		return mGLCanvas->GetParent()->GetHWND();
-	}
-
-	/** Force destroying EGL view, subclass must implement this method. */
-	virtual void end() {
-		mGLCanvas->Close();
-		wxDELETE(mGLCanvas);
-		mGLCanvas = nullptr;
-	}
-
-	/** Get whether opengl render system is ready, subclass must implement this method. */
-	virtual bool isOpenGLReady() {
-		return (mGLCanvas && mGLCanvas->IsShown());
-	}
-
-	/** Exchanges the front and back buffers, subclass must implement this method. */
-	virtual void swapBuffers() {
-		mGLCanvas->SwapBuffers();
-	}
-
-	virtual void setIMEKeyboardState(bool open) {}
-
-	virtual bool windowShouldClose() {
-		return (mGLCanvas == nullptr);
-	}
 };
 
 #endif //_COCOS_GL_CANVAS_H_

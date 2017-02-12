@@ -2,27 +2,37 @@
 #include "stdafx.h"
 #include "MainFrameWrapper.h"
 #include "CocosGLCanvas.h"
-#include "CocosGLContext.h"
 
 // Define a new application type
-class MyApp : public wxApp
+class MyApp : public wxApp, private cocos2d::Application
 {
 public:
-	MyApp() { m_glContext = NULL; m_glStereoContext = NULL; }
-
-	// Returns the shared context used by all frames and sets it as current for
-	// the given canvas.
-	CocosGLContext& GetContext(wxGLCanvas *canvas, bool useStereo);
+	MyApp() {}
 
 	// virtual wxApp methods
 	virtual bool OnInit() override;
 	virtual int OnExit() override;
 
-private:
-	// the GL context we use for all our mono rendering windows
-	CocosGLContext *m_glContext;
-	// the GL context we use for all our stereo rendering windows
-	CocosGLContext *m_glStereoContext;
+	virtual void initGLContextAttrs();
+
+	/**
+	@brief    Implement Director and Scene init code here.
+	@return true    Initialize success, app continue.
+	@return false   Initialize failed, app terminate.
+	*/
+	virtual bool applicationDidFinishLaunching();
+
+	/**
+	@brief  Called when the application moves to the background
+	@param  the pointer of the application
+	*/
+	virtual void applicationDidEnterBackground();
+
+	/**
+	@brief  Called when the application reenters the foreground
+	@param  the pointer of the application
+	*/
+	virtual void applicationWillEnterForeground();
 };
 
 MyApp& GetCurrentApp();

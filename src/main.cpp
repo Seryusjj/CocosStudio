@@ -1,57 +1,65 @@
 // wxWidgets "Hello world" Program
 // For compilers that support precompilation, includes "wx/wx.h".
-
+#include "stdafx.h"
 #include "MyApp.h"
-
+#include "EditorScene.h"
 wxIMPLEMENT_APP(MyApp);
 
-CocosGLContext& MyApp::GetContext(wxGLCanvas *canvas, bool useStereo)
-{
-	CocosGLContext *glContext;
-	if (useStereo)
-	{
-		if (!m_glStereoContext)
-		{
-			// Create the OpenGL context for the first stereo window which needs it:
-			// subsequently created windows will all share the same context.
-			m_glStereoContext = new CocosGLContext(canvas);
-		}
-		glContext = m_glStereoContext;
-	}
-	else
-	{
-		if (!m_glContext)
-		{
-			// Create the OpenGL context for the first mono window which needs it:
-			// subsequently created windows will all share the same context.
-			m_glContext = new CocosGLContext(canvas);
-		}
-		glContext = m_glContext;
-	}
-
-	glContext->SetCurrent(*canvas);
-
-	return *glContext;
-}
+static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
+static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 MyApp& GetCurrentApp() {
 	return wxGetApp();
 }
+MainFrameWrapper *frame;
 
 bool MyApp::OnInit()
 {
 	if (!wxApp::OnInit())
 		return false;
-	MainFrameWrapper *frame = new MainFrameWrapper(false);
-
+	frame = new MainFrameWrapper(false);
 	frame->Show(true);
+	if (frame->cocosglCanvas->InitGl()) {
+		frame->cocosglCanvas->retain();
+	}
+	else
+		return false;
+
 	return true;
 }
 
 int MyApp::OnExit()
 {
-	delete m_glContext;
-	delete m_glStereoContext;
-
 	return wxApp::OnExit();
+}
+
+static int register_all_packages()
+{
+	return 0; //flag for packages manager
+}
+
+void MyApp::initGLContextAttrs()
+{
+	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
+	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
+
+	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
+}
+
+bool MyApp::applicationDidFinishLaunching()
+{
+	register_all_packages();
+	return true;
+}
+
+void MyApp::applicationDidEnterBackground()
+{
+	cocos2d::Director::getInstance()->stopAnimation();
+}
+
+void MyApp::applicationWillEnterForeground()
+{
+	cocos2d::Director::getInstance()->startAnimation();
 }

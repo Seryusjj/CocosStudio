@@ -4,14 +4,12 @@
 #include "stdafx.h"
 
 //GLCONTEXT & GLCANVAS
-#include "CocosGLContext.h"
 #include "CocosGLCanvas.h"
 
 //Main Frame
 class MainFrameWrapper : public MainFrame {
-protected:
-	CocosGLCanvas* cocosglCanvas;
 public:
+	CocosGLCanvas* cocosglCanvas;
 	MainFrameWrapper(bool stereoWindow);
 
 	~MainFrameWrapper();
