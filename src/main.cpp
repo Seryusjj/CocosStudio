@@ -19,10 +19,11 @@ bool MyApp::OnInit()
 {
 	if (!wxApp::OnInit())
 		return false;
+	//needed on win32
+	cocos2d::FileUtils::getInstance()->addSearchPath("Resources");
+
 	frame = new MainFrameWrapper(false);
 	frame->Show(true);
-	
-
 	return true;
 }
 

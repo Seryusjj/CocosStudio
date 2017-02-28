@@ -15,6 +15,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                                            COMMAND ${CMAKE_COMMAND} -E copy_directory
                                            ${wxWidgets_LIB_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+										   
+	    #copy cocos2d-x dll
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                                           COMMAND ${CMAKE_COMMAND} -E copy_directory
+                                           ${COCOS2D_LIB_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
         target_link_libraries(${PROJECT_NAME} ${COCOS2D_LIBS} ${wxWidgets_LIBRARIES})
  else()

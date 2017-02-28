@@ -4,7 +4,8 @@ project(CocosStudio)
 
 
 set(wxWidgets_CONFIGURATION "mswu")
-set(wxWidgets_USE_STATIC off)
+set(WX_USE_GL 1)
+set(BUILD_SHARED_LIBS on)
 set(CocosResources "${CMAKE_CURRENT_SOURCE_DIR}/Resources/CocosResources")
 
 if(UNIX)
