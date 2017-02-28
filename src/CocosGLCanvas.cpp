@@ -120,6 +120,10 @@ bool initialized = false;
 void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 {
 	wxPaintDC(this);
+    if(!initialized){
+        InitGl();
+        initialized=true;
+    }
 	auto size = GetClientSize();
 	//setFrameSize(size.x, size.y);
 	setViewPortInPoints(0, 0, size.x, size.y);
@@ -131,9 +135,7 @@ void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 }
 
 void CocosGLCanvas::OnKeyDown(wxKeyEvent& event)
-{
-	float angle = 5.0;
-
+{   
 	switch (event.GetKeyCode())
 	{
 	case WXK_SPACE:

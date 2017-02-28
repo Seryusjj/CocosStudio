@@ -21,11 +21,7 @@ bool MyApp::OnInit()
 		return false;
 	frame = new MainFrameWrapper(false);
 	frame->Show(true);
-	if (frame->cocosglCanvas->InitGl()) {
-		frame->cocosglCanvas->retain();
-	}
-	else
-		return false;
+	
 
 	return true;
 }

@@ -30,8 +30,8 @@ find_package(wxWidgets COMPONENTS gl core base REQUIRED)
 
 
 if(UNIX)    
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${wxWidgets_CXX_FLAGS}")
-    set (CMAKE_CXX_FLAGS_DEBUG "-g -std=c++11 ${wxWidgets_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-Wall -std=c++11 ${wxWidgets_CXX_FLAGS}")
+    set (CMAKE_CXX_FLAGS_DEBUG "-Wall -g -std=c++11 ${wxWidgets_CXX_FLAGS}")
 endif()
 
 if (MSVC)
