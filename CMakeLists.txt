@@ -5,18 +5,15 @@ project(CocosStudio)
 
 set(wxWidgets_CONFIGURATION "mswu")
 SET(wxWidgets_USE_STATIC off)
-set(OPENGL_LIBRARIES "")
-set(GLUT_LIBRARY "")
-set(X11_LIBRARIES "")
+
 
 if(UNIX)
         set(wxWidgets_USE_RELEASE --toolkit=base --prefix=/usr)
         find_package(OpenGL REQUIRED)
         find_package(GLUT REQUIRED)
-        #find_package(X11 REQUIRED)
-        set(X11_LIBRARIES "")
-        message ( STATUS " X11_LIBRARIES: " ${X11_LIBRARIES} )
-
+        find_package(X11 REQUIRED)
+        find_package(GLEW REQUIRED)
+        find_package(PNG REQUIRED)
         message(STATUS "Config for unix")
 endif()
 
@@ -33,9 +30,8 @@ find_package(wxWidgets COMPONENTS gl core base REQUIRED)
 
 
 if(UNIX)    
-    add_definitions(-std=c++11)
-    add_definitions(-lX11)
-    set(CMAKE_CXX_FLAGS "${wxWidgets_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${wxWidgets_CXX_FLAGS}")
+    set (CMAKE_CXX_FLAGS_DEBUG "-g -std=c++11 ${wxWidgets_CXX_FLAGS}")
 endif()
 
 if (MSVC)
