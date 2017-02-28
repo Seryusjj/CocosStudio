@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 project(CocosStudio)
 
 
 set(wxWidgets_CONFIGURATION "mswu")
-SET(wxWidgets_USE_STATIC off)
-
+set(wxWidgets_USE_STATIC off)
+set(CocosResources "${CMAKE_CURRENT_SOURCE_DIR}/Resources/CocosResources")
 
 if(UNIX)
         set(wxWidgets_USE_RELEASE --toolkit=base --prefix=/usr)
@@ -40,8 +40,7 @@ if (MSVC)
   set (CMAKE_CXX_FLAGS_RELEASE "/EHsc /MT /Ox /Ob2 /Oi /Ot /Oy /GL /DNDEBUG")
 endif ()
 
-#set(BUILD_SHARED_LIBS ON CACHE BOOL "Set to ON to build DSO libraries" FORCE)
-#COCOS
+
 
 set(COCOS2D_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/external/cocos2d-x)
 
@@ -57,6 +56,13 @@ if(UNIX)
     add_definitions(-DLINUX)
     set(COCOS2D_LIB_DIR ${COCOS2D_ROOT}/build/linux-build/lib)
     set(PLATFORM_FOLDER linux)
+    EXECUTE_PROCESS( COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCHITECTURE )
+    if( ${ARCHITECTURE} STREQUAL "x86_64" )
+        set(ARCH_DIR "64-bit")
+    else()
+        set(ARCH_DIR "32-bit")
+    endif()
+    message(STATUS "Config for unix ${ARCHITECTURE}")
 endif()
 
 if(WIN32)

@@ -81,8 +81,7 @@ static bool glew_dynamic_binding()
 
 bool CocosGLCanvas::InitGlew()
 {
-	wxGLCanvas::SetCurrent(*m_context);
-	GLenum err = glewInit();
+	wxGLCanvas::SetCurrent(*m_context);	
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 	GLenum GlewInitResult = glewInit();
 	if (GLEW_OK != GlewInitResult)
@@ -197,8 +196,7 @@ bool CocosGLCanvas::InitGl()
 
 	// create a scene. it's an autorelease object
 	auto scene = EditorScene::createScene();
-	director->runWithScene(scene);
-	GLenum error = glGetError();
+	director->runWithScene(scene);    
 	// run
 	_drawTimer.Start(25);
 	return true;
