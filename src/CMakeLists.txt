@@ -41,4 +41,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                                    ${CocosResources} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources)
+								   
+#copy resources from WxWidgetsResources folder for buttons icons and all this stuff
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                                   ${WxWidgetsResources} $<TARGET_FILE_DIR:${PROJECT_NAME}>/wxWidgetsResources)
 

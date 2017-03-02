@@ -2,6 +2,7 @@
 #include "CocosGLCanvas.h"
 #include <iostream>
 #include "EditorScene.h"
+
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 
 enum
@@ -81,7 +82,7 @@ static bool glew_dynamic_binding()
 
 bool CocosGLCanvas::InitGlew()
 {
-	wxGLCanvas::SetCurrent(*m_context);	
+	wxGLCanvas::SetCurrent(*m_context);
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 	GLenum GlewInitResult = glewInit();
 	if (GLEW_OK != GlewInitResult)
@@ -119,10 +120,10 @@ bool initialized = false;
 void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 {
 	wxPaintDC(this);
-    if(!initialized){
-        InitGl();
-        initialized=true;
-    }
+	if (!initialized) {
+		InitGl();
+		initialized = true;
+	}
 	auto size = GetClientSize();
 	//setFrameSize(size.x, size.y);
 	setViewPortInPoints(0, 0, size.x, size.y);
@@ -134,7 +135,7 @@ void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 }
 
 void CocosGLCanvas::OnKeyDown(wxKeyEvent& event)
-{   
+{
 	switch (event.GetKeyCode())
 	{
 	case WXK_SPACE:
@@ -196,7 +197,7 @@ bool CocosGLCanvas::InitGl()
 
 	// create a scene. it's an autorelease object
 	auto scene = EditorScene::createScene();
-	director->runWithScene(scene);    
+	director->runWithScene(scene);
 	// run
 	_drawTimer.Start(25);
 	return true;

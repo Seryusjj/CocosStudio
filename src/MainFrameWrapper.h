@@ -1,6 +1,6 @@
 #pragma once
 
-#include "noname.h"
+#include "MainFrame.h"
 #include "stdafx.h"
 
 //GLCONTEXT & GLCANVAS

@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "MyApp.h"
 #include "EditorScene.h"
+
 wxIMPLEMENT_APP(MyApp);
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);

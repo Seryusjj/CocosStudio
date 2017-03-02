@@ -5,23 +5,25 @@
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __NONAME_H__
-#define __NONAME_H__
+#ifndef __MAINFRAME_H__
+#define __MAINFRAME_H__
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
-#include <wx/panel.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/bmpbuttn.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
+#include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/panel.h>
 #include <wx/scrolwin.h>
 #include <wx/splitter.h>
-#include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
 #include <wx/menu.h>
 #include <wx/frame.h>
 
@@ -41,6 +43,7 @@ class MainFrame : public wxFrame
 		wxSplitterWindow* m_splitter4;
 		wxScrolledWindow* m_scrolledWindow3;
 		wxPanel* m_panel5;
+		wxBitmapButton* m_bpButton1;
 		wxPanel* m_panel6;
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter3;
@@ -76,4 +79,4 @@ class MainFrame : public wxFrame
 	
 };
 
-#endif //__NONAME_H__
+#endif //__MAINFRAME_H__
