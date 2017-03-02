@@ -73,7 +73,7 @@ if(WIN32)
 endif()
 #cocos dependencies includes
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${COCOS2D_ROOT}/cmake/Modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 include(CocosUsePrebuiltLibs)
 
 set(COCOS2D_LIBS  ${PNG_LIBRARIES}
