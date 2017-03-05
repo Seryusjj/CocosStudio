@@ -18,7 +18,7 @@
         <property name="name">MyProject1</property>
         <property name="namespace"></property>
         <property name="path">.</property>
-        <property name="precompiled_header"></property>
+        <property name="precompiled_header">#include &quot;stdafx.h&quot;</property>
         <property name="relative_path">1</property>
         <property name="skip_lua_events">1</property>
         <property name="skip_php_events">1</property>
@@ -570,7 +570,7 @@
                                                                             <property name="pin_button">1</property>
                                                                             <property name="pos"></property>
                                                                             <property name="resize">Resizable</property>
-                                                                            <property name="selected"></property>
+                                                                            <property name="selected">Load From File; wxWidgetsResources\button_place_holder.bmp</property>
                                                                             <property name="show">1</property>
                                                                             <property name="size"></property>
                                                                             <property name="style">wxBU_AUTODRAW</property>

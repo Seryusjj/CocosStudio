@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-class EditorScene : public cocos2d::LayerColor
+class EditorScene3D : public cocos2d::LayerColor
 {
 public:
 	static cocos2d::Scene* createScene();
@@ -11,7 +11,7 @@ public:
 	virtual bool init();
 
 	// implement the "static create()" method manually
-	CREATE_FUNC(EditorScene);
+	CREATE_FUNC(EditorScene3D);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

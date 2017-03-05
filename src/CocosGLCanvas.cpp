@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CocosGLCanvas.h"
 #include <iostream>
-#include "EditorScene.h"
+#include "EditorScene3D.h"
 
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 
@@ -16,9 +16,9 @@ EVT_KEY_DOWN(CocosGLCanvas::OnKeyDown)
 EVT_TIMER(DrawTimer, CocosGLCanvas::OnDrawTimer)
 wxEND_EVENT_TABLE()
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 static bool glew_dynamic_binding()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	const char *gl_extensions = (const char*)glGetString(GL_EXTENSIONS);
 
 	// If the current opengl driver doesn't have framebuffers methods, check if an extension exists
@@ -76,9 +76,9 @@ static bool glew_dynamic_binding()
 				return false;
 			}
 	}
+#endif
 	return true;
 }
-#endif
 
 bool CocosGLCanvas::InitGlew()
 {
@@ -103,13 +103,11 @@ bool CocosGLCanvas::InitGlew()
 		wxMessageBox("Error: openg 2 not supported");
 	}
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	if (glew_dynamic_binding() == false)
 	{
 		wxMessageBox("No OpenGL framebuffer support");
 		return false;
 	}
-#endif
 
 #endif // (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 
@@ -124,10 +122,14 @@ void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 		InitGl();
 		initialized = true;
 	}
+	//set viewpoert new size
 	auto size = GetClientSize();
-	//setFrameSize(size.x, size.y);
 	setViewPortInPoints(0, 0, size.x, size.y);
+
+	//draw on context using cocos
 	cocos2d::Director::getInstance()->mainLoop();
+
+	//check or errors
 	GLenum error = glGetError();
 	if (error != GLEW_OK) {
 		wxMessageBox("Cocos2d-x internal error");
@@ -153,14 +155,11 @@ void CocosGLCanvas::OnKeyDown(wxKeyEvent& event)
 
 void CocosGLCanvas::OnDrawTimer(wxTimerEvent& WXUNUSED(event))
 {
-	Refresh(false);//redraw view
+	//redraw view
+	Refresh(false);
 }
 
 CocosGLCanvas::CocosGLCanvas(wxWindow *parent, int *attribList)
-// With perspective OpenGL graphics, the wxFULL_REPAINT_ON_RESIZE style
-// flag should always be set, because even making the canvas smaller should
-// be followed by a paint event that updates the entire canvas with new
-// viewport settings.
 	: wxGLCanvas(parent, wxID_ANY, attribList,
 		wxDefaultPosition, wxDefaultSize,
 		wxFULL_REPAINT_ON_RESIZE),
@@ -176,7 +175,7 @@ bool CocosGLCanvas::InitGl()
 	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
 
 	auto director = cocos2d::Director::getInstance();
-	while (!IsShown()) {};  // Force the Shown
+	//while (!IsShown()) {};  // Force the Shown
 
 	InitGlew();
 
@@ -193,13 +192,16 @@ bool CocosGLCanvas::InitGl()
 	director->setDisplayStats(true);
 
 	// set FPS. the default value is 1.0/60 if you don't call this
-	director->setAnimationInterval(1.0f / 60);
+	director->setAnimationInterval(1.0f / 30);
 
 	// create a scene. it's an autorelease object
-	auto scene = EditorScene::createScene();
+	auto scene = EditorScene3D::createScene();
 	director->runWithScene(scene);
+
 	// run
-	_drawTimer.Start(25);
+	//getAnimationInterval is for 1s, get for 1ms
+	float callsPerMili = director->getAnimationInterval() * 1000;
+	_drawTimer.Start(callsPerMili);
 	return true;
 }
 

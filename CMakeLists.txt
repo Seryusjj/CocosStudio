@@ -76,6 +76,7 @@ endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 include(CocosUsePrebuiltLibs)
+include(SetPrecompiledHeaders)
 
 set(COCOS2D_LIBS  ${PNG_LIBRARIES}
                   ${JPEG_LIBRARIES}

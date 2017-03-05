@@ -1,6 +1,21 @@
 
+
 file(GLOB SRCS *.cpp *.h *.xmp)
 set(PROJECT_NAME CocosStudioUI)
+set(SRCS	main.cpp
+			MyApp.h
+			CocosGLCanvas.cpp
+			CocosGLCanvas.h
+			MainFrame.cpp
+			MainFrame.h
+			MainFrameWrapper.cpp
+			MainFrameWrapper.h
+			stdafx.h
+			stdafx.cpp
+			EditorScene3D.cpp
+			EditorScene3D.h
+			EditorGrid.cpp
+			EditorGrid.h)
 
 
 include(${wxWidgets_USE_FILE})
@@ -36,6 +51,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
                                                ${PNG_LIBRARIES}
                                                -lfontconfig)
  endif()
+ 
+ #set precompiled header 
+ ADD_PRECOMPILED_HEADER(${PROJECT_NAME} stdafx.h [FORCEINCLUDE])
+ 
 
 #copy resources from resource folder for cocos view
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
