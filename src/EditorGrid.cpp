@@ -112,6 +112,6 @@ bool EditorGrid::init()
 
 	//make alpha color take effect
 	setBlendFunc({ GL_ONE, GL_ONE_MINUS_SRC_ALPHA });
-
+	setCullFaceEnabled(false);
 	return true;
 }
