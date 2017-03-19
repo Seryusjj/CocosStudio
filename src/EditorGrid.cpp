@@ -15,23 +15,53 @@ std::vector< MeshVertexAttrib > attribs = {
 	{ 3, GL_FLOAT, GLProgram::VERTEX_ATTRIB_POSITION,   3 * sizeof(float) },
 	{ 4, GL_FLOAT, GLProgram::VERTEX_ATTRIB_COLOR,     4 * sizeof(float) },
 };
-int perVertexSizeInFloat = 3;  // 3+3+3+3+2
+int perVertexSizeInFloat = 12;  //3+4
 
-float planeSize = 1.0f;
-std::vector< float > vertices =
-{
-	//positon								//color but used as barycentric coords in orther not to modify the renderer
-	-planeSize*0.5f,  0 , -planeSize*0.5f,  1,0,0,0,
-	-planeSize*0.5f,  0 ,  planeSize*0.5f,  0,1,0,0,
-	 planeSize*0.5f,  0 , -planeSize*0.5f,  0,0,1,0,
-	 planeSize*0.5f,  0 ,  planeSize*0.5f,  1,0,0,0,
-};
+float cellSize = 1.0f;
+float gridSize = 25;//gridSize*gridSize grid
 
-MeshData::IndexArray indices =
-{
-	0,1,2,
-	3,2,1,
-};
+std::vector< float > vertices1;
+
+MeshData::IndexArray indices1;
+
+void buildVerticesAndIndices() {
+	//build vertex (vertex duplied on purpose for the grid coloring)
+	for (int i = -gridSize * 0.5; i < gridSize* 0.5; i++)
+	{
+		for (int j = -gridSize * 0.5; j < gridSize * 0.5; j++)
+		{
+			//first vertex
+			vertices1.push_back(-cellSize*0.5f + i); vertices1.push_back(0); vertices1.push_back(-cellSize*0.5f + j);
+			//barycentric coords
+			vertices1.push_back(1); vertices1.push_back(0); vertices1.push_back(0); vertices1.push_back(0);
+
+			//second vertex
+			vertices1.push_back(-cellSize*0.5f + i); vertices1.push_back(0); vertices1.push_back(cellSize*0.5f + j);
+			//barycentric coords
+			vertices1.push_back(0);	vertices1.push_back(1);	vertices1.push_back(0);	vertices1.push_back(0);
+
+			//third vertex
+			vertices1.push_back(cellSize*0.5f + i);	vertices1.push_back(0);	vertices1.push_back(-cellSize*0.5f + j);
+			//barycentric coords
+			vertices1.push_back(0);	vertices1.push_back(0);	vertices1.push_back(1);	vertices1.push_back(0);
+
+			//fourth vertex
+			vertices1.push_back(cellSize*0.5f + i);	vertices1.push_back(0);	vertices1.push_back(cellSize*0.5f + j);
+			//barycentric coords
+			vertices1.push_back(1);	vertices1.push_back(0);	vertices1.push_back(0);	vertices1.push_back(0);
+		}
+	}
+
+	int numIndex = gridSize*gridSize;
+	int last = -1;
+	for (int i = 0; i < numIndex; i++)
+	{
+		last++;
+		indices1.push_back(last); indices1.push_back(last + 1);	indices1.push_back(last + 2);
+		last += 3;
+		indices1.push_back(last); indices1.push_back(last - 1);	indices1.push_back(last - 2);
+	}
+}
 
 GLchar* vShaderByteArray =
 "varying vec3 vBC;\
@@ -60,7 +90,8 @@ bool EditorGrid::init()
 	{
 		return false;
 	}
-	auto mesh = Mesh::create(vertices, perVertexSizeInFloat, indices, attribs);
+	buildVerticesAndIndices();
+	auto mesh = Mesh::create(vertices1, perVertexSizeInFloat, indices1, attribs);
 	addMesh(mesh);
 
 	setMaterial(Sprite3DMaterial::createBuiltInMaterial(Sprite3DMaterial::MaterialType::UNLIT_NOTEX, false));
@@ -80,49 +111,4 @@ bool EditorGrid::init()
 	setBlendFunc({ GL_ONE, GL_ONE_MINUS_SRC_ALPHA });
 
 	return true;
-}
-
-void EditorGrid::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
-{
-	//programState->setUniformVec4("barycentric", color);
-
-	Sprite3D::draw(renderer, transform, flags);
-}
-
-void EditorGrid::drawGrid(int gridSize)
-{
-	int halfGrid = gridSize / 2;
-	int count = 0;
-	//from -size to 0
-	for (int x = -halfGrid; x < halfGrid; x++) {
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(x, 0, 0);
-		glVertex3f(x, 0, -halfGrid);
-		glEnd();
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(x, 0, 0);
-		glVertex3f(x, 0, halfGrid);
-		glEnd();
-		count++;
-		if (count % 10 == 0)
-			glLineWidth(1.5f);
-		else
-			glLineWidth(0.5f);
-	}
-	count = 0;
-	for (int z = -halfGrid; z < halfGrid; z++) {
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(0, 0, z);
-		glVertex3f(-halfGrid, 0, z);
-		glEnd();
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(0, 0, z);
-		glVertex3f(halfGrid, 0, z);
-		glEnd();
-		count++;
-		if (count % 10 == 0)
-			glLineWidth(1.5f);
-		else
-			glLineWidth(0.5f);
-	}
 }

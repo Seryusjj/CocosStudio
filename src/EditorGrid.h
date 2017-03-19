@@ -15,12 +15,10 @@ public:
 	~EditorGrid();
 
 	virtual bool init() override;
-	//virtual void visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags) override;
-	virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
+
 	CREATE_FUNC(EditorGrid);
 
 protected:
-	//draw a grid of a certain size centered on the 0,0,0
-	void drawGrid(int gridSize);
+
 private:
 };
