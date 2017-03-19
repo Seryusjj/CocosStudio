@@ -1,13 +1,22 @@
+#pragma once
+
 #include "stdafx.h"
 
-class EditorGrid : public cocos2d::Node
+#include "GridCustomCommand.h"
+
+class EditorGrid : public cocos2d::Sprite3D
 {
+protected:
+	friend class cocos2d::Mesh;
+	friend class cocos2d::MeshCommand;
 public:
+
 	EditorGrid();
 	~EditorGrid();
-	virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
+
 	virtual bool init() override;
-	cocos2d::CustomCommand _customGrid;
+	//virtual void visit(Renderer *renderer, const Mat4& parentTransform, uint32_t parentFlags) override;
+	virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 	CREATE_FUNC(EditorGrid);
 
 protected:

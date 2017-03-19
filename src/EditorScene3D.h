@@ -12,6 +12,10 @@ public:
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(EditorScene3D);
+
+protected:
+	virtual void createAndAddCamera();
+	unsigned short _currentCameraMask;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

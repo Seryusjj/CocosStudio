@@ -22,7 +22,6 @@ bool MyApp::OnInit()
 		return false;
 	//needed on win32
 	cocos2d::FileUtils::getInstance()->addSearchPath("Resources");
-	cocos2d::FileUtils::getInstance()->addSearchPath("wxWidgetsResources");
 
 	frame = new MainFrameWrapper(false);
 	frame->Show(true);

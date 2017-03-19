@@ -9,7 +9,7 @@ public:
 	int  _retinaFactor;//1 or 0
 	float _frameZoomFactor;
 	CocosGLCanvas(wxWindow *parent, int *attribList = NULL);
-	bool InitGl();
+
 	/* override functions */
 	virtual bool isOpenGLReady() override;
 	virtual void end() override;
@@ -26,12 +26,14 @@ public:
 #endif //(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 private:
+	void onResizeCanvas(float width, float height);
+	bool initGl();
+	bool initGlew();
 	wxGLContext* m_context;
 	void OnPaint(wxPaintEvent& event);
 
 	void OnKeyDown(wxKeyEvent& event);
 	void OnDrawTimer(wxTimerEvent& WXUNUSED(event));
-	bool InitGlew();
 
 	wxTimer _drawTimer;
 

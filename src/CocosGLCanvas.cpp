@@ -4,6 +4,9 @@
 #include "EditorScene3D.h"
 
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
+bool _initialized = false;
+bool _shown = false;
+wxSize _previousSize;
 
 enum
 {
@@ -80,15 +83,13 @@ static bool glew_dynamic_binding()
 	return true;
 }
 
-bool CocosGLCanvas::InitGlew()
+bool CocosGLCanvas::initGlew()
 {
 	wxGLCanvas::SetCurrent(*m_context);
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 	GLenum GlewInitResult = glewInit();
 	if (GLEW_OK != GlewInitResult)
 	{
-		//std::cerr << "Error:" << glewGetString(err) << std::endl;
-		//const GLubyte* String = glewGetErrorString(err);
 		wxMessageBox("GLEW is not initialized");
 		return false;
 	}
@@ -100,7 +101,7 @@ bool CocosGLCanvas::InitGlew()
 
 	if (!glewIsSupported("GL_VERSION_2_0"))
 	{
-		wxMessageBox("Error: openg 2 not supported");
+		wxMessageBox("Error: opengl 2 not supported");
 	}
 
 	if (glew_dynamic_binding() == false)
@@ -108,26 +109,40 @@ bool CocosGLCanvas::InitGlew()
 		wxMessageBox("No OpenGL framebuffer support");
 		return false;
 	}
-
 #endif // (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 
 	return true;
 }
 
-bool initialized = false;
 void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 {
 	wxPaintDC(this);
-	if (!initialized) {
-		InitGl();
-		initialized = true;
-	}
-	//set viewpoert new size
 	auto size = GetClientSize();
-	setViewPortInPoints(0, 0, size.x, size.y);
+
+	if (!_initialized)
+	{
+		initGl();
+		_initialized = true;
+	}
+
+	if (size.x > 50 && size.y > 50 && !_shown)
+	{
+		onResizeCanvas(size.x, size.y);
+		_shown = true;
+	}
+	else
+	{
+		//on resize
+		if (_previousSize.x != size.x || _previousSize.y != size.y)
+		{
+			onResizeCanvas(size.x, size.y);
+		}
+	}
 
 	//draw on context using cocos
 	cocos2d::Director::getInstance()->mainLoop();
+
+	_previousSize = size;
 
 	//check or errors
 	GLenum error = glGetError();
@@ -166,9 +181,10 @@ CocosGLCanvas::CocosGLCanvas(wxWindow *parent, int *attribList)
 	_drawTimer(this, DrawTimer)
 {
 	m_context = new wxGLContext(this);
+	_frameZoomFactor = 1.0f;
 }
 
-bool CocosGLCanvas::InitGl()
+bool CocosGLCanvas::initGl()
 {
 	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
 
@@ -177,7 +193,7 @@ bool CocosGLCanvas::InitGl()
 	auto director = cocos2d::Director::getInstance();
 	//while (!IsShown()) {};  // Force the Shown
 
-	InitGlew();
+	initGlew();
 
 	// initialize director
 	auto glview = director->getOpenGLView();
@@ -186,10 +202,10 @@ bool CocosGLCanvas::InitGl()
 		director->setOpenGLView(this);
 	}
 
-	setDesignResolutionSize(mediumResolutionSize.width, mediumResolutionSize.height, ResolutionPolicy::FIXED_HEIGHT);
+	setDesignResolutionSize(mediumResolutionSize.width, mediumResolutionSize.height, ResolutionPolicy::NO_BORDER);
 
 	// turn on display FPS
-	director->setDisplayStats(true);
+	//director->setDisplayStats(true);
 
 	// set FPS. the default value is 1.0/60 if you don't call this
 	director->setAnimationInterval(1.0f / 30);
@@ -201,13 +217,30 @@ bool CocosGLCanvas::InitGl()
 	// run
 	//getAnimationInterval is for 1s, get for 1ms
 	float callsPerMili = director->getAnimationInterval() * 1000;
-	_drawTimer.Start(callsPerMili);
+	//not necessari to render every time just when changes are detected
+	//_drawTimer.Start(callsPerMili);
 	return true;
+}
+
+void CocosGLCanvas::onResizeCanvas(float width, float height)
+{
+	//resize
+	if (width && height && _resolutionPolicy != ResolutionPolicy::UNKNOWN)
+	{
+		cocos2d::Size baseDesignSize = _designResolutionSize;
+		ResolutionPolicy baseResolutionPolicy = _resolutionPolicy;
+
+		int frameWidth = width / _frameZoomFactor;
+		int frameHeight = height / _frameZoomFactor;
+		setFrameSize(frameWidth, frameHeight);
+		setDesignResolutionSize(baseDesignSize.width, baseDesignSize.height, baseResolutionPolicy);
+		cocos2d::Director::getInstance()->setViewport();
+	}
 }
 
 bool CocosGLCanvas::isOpenGLReady()
 {
-	return IsShown();
+	return _initialized;
 }
 
 void CocosGLCanvas::end()
