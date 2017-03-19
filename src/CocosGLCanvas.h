@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+class EditorScene3D;
+
 class CocosGLCanvas : public wxGLCanvas, public cocos2d::GLView
 {
 public:
@@ -26,6 +28,7 @@ public:
 #endif //(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 private:
+	EditorScene3D * _scene;
 	void onResizeCanvas(float width, float height);
 	bool initGl();
 	bool initGlew();
@@ -33,8 +36,14 @@ private:
 	void OnPaint(wxPaintEvent& event);
 
 	void OnKeyDown(wxKeyEvent& event);
+	void OnMouseWheel(wxMouseEvent& event);
 	void OnDrawTimer(wxTimerEvent& WXUNUSED(event));
 
+	void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent& event);
+	void CocosGLCanvas::OnMouseMiddleUp(wxMouseEvent& event);
+	void CocosGLCanvas::OnMouseRightDown(wxMouseEvent& event);
+	void CocosGLCanvas::OnMouseRightUp(wxMouseEvent& event);
+	void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent& event);
 	wxTimer _drawTimer;
 
 	wxDECLARE_EVENT_TABLE();

@@ -7,6 +7,9 @@ static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 bool _initialized = false;
 bool _shown = false;
 wxSize _previousSize;
+bool middleDragAction = false;
+bool rightDragAction = false;
+wxPoint pointOnDragStart;
 
 enum
 {
@@ -16,7 +19,14 @@ enum
 wxBEGIN_EVENT_TABLE(CocosGLCanvas, wxGLCanvas)
 EVT_PAINT(CocosGLCanvas::OnPaint)
 EVT_KEY_DOWN(CocosGLCanvas::OnKeyDown)
+EVT_MOUSEWHEEL(CocosGLCanvas::OnMouseWheel)
+EVT_MIDDLE_DOWN(CocosGLCanvas::OnMouseMiddleDown)
+EVT_RIGHT_DOWN(CocosGLCanvas::OnMouseRightDown)
+EVT_RIGHT_UP(CocosGLCanvas::OnMouseRightUp)
+EVT_MIDDLE_UP(CocosGLCanvas::OnMouseMiddleUp)
+EVT_MOTION(CocosGLCanvas::OnMouseMoveEvent)
 EVT_TIMER(DrawTimer, CocosGLCanvas::OnDrawTimer)
+
 wxEND_EVENT_TABLE()
 
 static bool glew_dynamic_binding()
@@ -168,10 +178,89 @@ void CocosGLCanvas::OnKeyDown(wxKeyEvent& event)
 	}
 }
 
+void CocosGLCanvas::OnMouseWheel(wxMouseEvent & event)
+{
+	if (!middleDragAction && !rightDragAction) {
+		int rotation = event.GetWheelRotation();
+		if (rotation != 0) {
+			float zoomFactor = 1.0f;
+			if (rotation < 0)
+				zoomFactor *= -1;
+
+			_scene->zoom(zoomFactor);
+			Refresh(false);
+		}
+	}
+}
+
 void CocosGLCanvas::OnDrawTimer(wxTimerEvent& WXUNUSED(event))
 {
 	//redraw view
 	Refresh(false);
+}
+
+void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent & event)
+{
+	pointOnDragStart = event.GetPosition();
+	middleDragAction = true;
+}
+
+void CocosGLCanvas::OnMouseMiddleUp(wxMouseEvent & event)
+{
+	middleDragAction = false;
+}
+
+void CocosGLCanvas::OnMouseRightDown(wxMouseEvent & event)
+{
+	pointOnDragStart = event.GetPosition();
+	rightDragAction = true;
+}
+
+void CocosGLCanvas::OnMouseRightUp(wxMouseEvent & event)
+{
+	rightDragAction = false;
+}
+
+void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
+{
+	if (event.Dragging())
+	{
+		if (middleDragAction)
+		{
+			wxPoint point = event.GetPosition();
+			float x = point.x - pointOnDragStart.x;
+			float y = point.y - pointOnDragStart.y;
+			float speed = 0.2f;
+			if (x > 0)	x = speed;
+			if (x < 0)	x = -speed;
+			if (y > 0)	y = speed;
+			if (y < 0)	y = -speed;
+			_scene->pan(x, y);
+			//redraw view
+			Refresh(false);
+			pointOnDragStart = event.GetPosition();
+		}
+		else if (rightDragAction)
+		{
+			wxPoint point = event.GetPosition();
+			float x = point.x - pointOnDragStart.x;
+			float y = point.y - pointOnDragStart.y;
+			float speed = 0.2f;
+			if (x > 0)	x = speed;
+			if (x < 0)	x = -speed;
+			if (y > 0)	y = speed;
+			if (y < 0)	y = -speed;
+			_scene->rotateView(x, y);
+			//redraw view
+			Refresh(false);
+			pointOnDragStart = event.GetPosition();
+		}
+	}
+	else
+	{
+		rightDragAction = false;
+		middleDragAction = false;
+	}
 }
 
 CocosGLCanvas::CocosGLCanvas(wxWindow *parent, int *attribList)
@@ -213,6 +302,11 @@ bool CocosGLCanvas::initGl()
 	// create a scene. it's an autorelease object
 	auto scene = EditorScene3D::createScene();
 	director->runWithScene(scene);
+
+	auto vect = scene->getChildren();
+	auto count = scene->getChildrenCount();
+	auto layer = scene->getChildByTag(0);
+	_scene = dynamic_cast<EditorScene3D*>(layer);
 
 	// run
 	//getAnimationInterval is for 1s, get for 1ms
