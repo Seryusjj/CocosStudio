@@ -303,14 +303,12 @@ bool CocosGLCanvas::initGl()
 	auto scene = EditorScene3D::createScene();
 	director->runWithScene(scene);
 
-	auto vect = scene->getChildren();
-	auto count = scene->getChildrenCount();
-	auto layer = scene->getChildByTag(0);
+    auto layer = scene->getChildByTag(0);
 	_scene = dynamic_cast<EditorScene3D*>(layer);
 
 	// run
 	//getAnimationInterval is for 1s, get for 1ms
-	float callsPerMili = director->getAnimationInterval() * 1000;
+    //float callsPerMili = director->getAnimationInterval() * 1000;
 	//not necessari to render every time just when changes are detected
 	//_drawTimer.Start(callsPerMili);
 	return true;

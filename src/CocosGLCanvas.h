@@ -39,11 +39,11 @@ private:
 	void OnMouseWheel(wxMouseEvent& event);
 	void OnDrawTimer(wxTimerEvent& WXUNUSED(event));
 
-	void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent& event);
-	void CocosGLCanvas::OnMouseMiddleUp(wxMouseEvent& event);
-	void CocosGLCanvas::OnMouseRightDown(wxMouseEvent& event);
-	void CocosGLCanvas::OnMouseRightUp(wxMouseEvent& event);
-	void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent& event);
+    void OnMouseMiddleDown(wxMouseEvent& event);
+    void OnMouseMiddleUp(wxMouseEvent& event);
+    void OnMouseRightDown(wxMouseEvent& event);
+    void OnMouseRightUp(wxMouseEvent& event);
+    void OnMouseMoveEvent(wxMouseEvent& event);
 	wxTimer _drawTimer;
 
 	wxDECLARE_EVENT_TABLE();
