@@ -28,7 +28,10 @@ public:
 #endif //(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 private:
+	wxPoint inline pointToCocos(const wxPoint& originalWxPoint);
 	EditorScene3D * _scene;
+	cocos2d::Node* _currentSelection;
+
 	void onResizeCanvas(float width, float height);
 	bool initGl();
 	bool initGlew();
@@ -39,11 +42,13 @@ private:
 	void OnMouseWheel(wxMouseEvent& event);
 	void OnDrawTimer(wxTimerEvent& WXUNUSED(event));
 
-    void OnMouseMiddleDown(wxMouseEvent& event);
-    void OnMouseMiddleUp(wxMouseEvent& event);
-    void OnMouseRightDown(wxMouseEvent& event);
-    void OnMouseRightUp(wxMouseEvent& event);
-    void OnMouseMoveEvent(wxMouseEvent& event);
+	void OnMouseLeftDown(wxMouseEvent& event);
+	void OnMouseLeftUp(wxMouseEvent& event);
+	void OnMouseMiddleDown(wxMouseEvent& event);
+	void OnMouseMiddleUp(wxMouseEvent& event);
+	void OnMouseRightDown(wxMouseEvent& event);
+	void OnMouseRightUp(wxMouseEvent& event);
+	void OnMouseMoveEvent(wxMouseEvent& event);
 	wxTimer _drawTimer;
 
 	wxDECLARE_EVENT_TABLE();

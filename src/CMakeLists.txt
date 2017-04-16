@@ -14,10 +14,10 @@ set(SRCS	main.cpp
 			stdafx.cpp
 			EditorScene3D.cpp
 			EditorScene3D.h
-			GridCustomCommand.cpp
-			GridCustomCommand.h
 			EditorGrid.cpp
-			EditorGrid.h)
+			EditorGrid.h
+			DrawNode3D.cpp
+			DrawNode3D.h)
 
 
 include(${wxWidgets_USE_FILE})

@@ -23,6 +23,8 @@ EVT_MOUSEWHEEL(CocosGLCanvas::OnMouseWheel)
 EVT_MIDDLE_DOWN(CocosGLCanvas::OnMouseMiddleDown)
 EVT_RIGHT_DOWN(CocosGLCanvas::OnMouseRightDown)
 EVT_RIGHT_UP(CocosGLCanvas::OnMouseRightUp)
+EVT_LEFT_DOWN(CocosGLCanvas::OnMouseLeftDown)
+EVT_LEFT_UP(CocosGLCanvas::OnMouseLeftUp)
 EVT_MIDDLE_UP(CocosGLCanvas::OnMouseMiddleUp)
 EVT_MOTION(CocosGLCanvas::OnMouseMoveEvent)
 EVT_TIMER(DrawTimer, CocosGLCanvas::OnDrawTimer)
@@ -93,6 +95,17 @@ static bool glew_dynamic_binding()
 	return true;
 }
 
+//get a wxpoint an converr it to cocos2dx coordinate
+wxPoint inline CocosGLCanvas::pointToCocos(const wxPoint& originalWxPoint)
+{
+	auto realFrameSize = cocos2d::GLView::getFrameSize();
+	auto screenSize = cocos2d::Director::getInstance()->getWinSize();
+
+	float y = (originalWxPoint.y * screenSize.height) / realFrameSize.height;
+	float x = (originalWxPoint.x * screenSize.width) / realFrameSize.width;
+	auto result = wxPoint(x, y);
+	return result;
+}
 bool CocosGLCanvas::initGlew()
 {
 	wxGLCanvas::SetCurrent(*m_context);
@@ -188,7 +201,7 @@ void CocosGLCanvas::OnMouseWheel(wxMouseEvent & event)
 				zoomFactor *= -1;
 
 			_scene->zoom(zoomFactor);
-			Refresh(false);
+			Refresh(true);
 		}
 	}
 }
@@ -196,7 +209,24 @@ void CocosGLCanvas::OnMouseWheel(wxMouseEvent & event)
 void CocosGLCanvas::OnDrawTimer(wxTimerEvent& WXUNUSED(event))
 {
 	//redraw view
-	Refresh(false);
+	Refresh(true);
+}
+
+void CocosGLCanvas::OnMouseLeftDown(wxMouseEvent & event)
+{
+	wxPoint point = pointToCocos(event.GetPosition());
+	_scene->removeBoundingBox(_currentSelection);
+	auto selection = _scene->select(point.x, point.y);
+	_scene->addBoundingBox(selection);
+	_currentSelection = selection;
+	Refresh(true);
+}
+
+void CocosGLCanvas::OnMouseLeftUp(wxMouseEvent & event)
+{
+	int a = 0;
+	a++;
+	SetFocus();
 }
 
 void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent & event)
@@ -235,9 +265,9 @@ void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 			if (x < 0)	x = -speed;
 			if (y > 0)	y = speed;
 			if (y < 0)	y = -speed;
-			_scene->pan(x, y);
+			_scene->pan(-x, y);
 			//redraw view
-			Refresh(false);
+			Refresh(true);
 			pointOnDragStart = event.GetPosition();
 		}
 		else if (rightDragAction)
@@ -250,9 +280,9 @@ void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 			if (x < 0)	x = -speed;
 			if (y > 0)	y = speed;
 			if (y < 0)	y = -speed;
-			_scene->rotateView(x, y);
+			_scene->rotateView(x, -y);
 			//redraw view
-			Refresh(false);
+			Refresh(true);
 			pointOnDragStart = event.GetPosition();
 		}
 	}
@@ -303,12 +333,12 @@ bool CocosGLCanvas::initGl()
 	auto scene = EditorScene3D::createScene();
 	director->runWithScene(scene);
 
-    auto layer = scene->getChildByTag(0);
+	auto layer = scene->getChildByTag(0);
 	_scene = dynamic_cast<EditorScene3D*>(layer);
 
 	// run
 	//getAnimationInterval is for 1s, get for 1ms
-    //float callsPerMili = director->getAnimationInterval() * 1000;
+	//float callsPerMili = director->getAnimationInterval() * 1000;
 	//not necessari to render every time just when changes are detected
 	//_drawTimer.Start(callsPerMili);
 	return true;

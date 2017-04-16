@@ -78,13 +78,13 @@ GLchar* fShaderByteArray =
 \
 float edgeFactor(){\
 	vec3 d = fwidth(vec3(0,vBC.y,vBC.z));\
-	vec3 a3 = smoothstep(vec3(0.0), d*1.5, vBC);\
+	vec3 a3 = smoothstep(vec3(0.0), d*1.2, vBC);\
 	return min(min(a3.x, a3.y), a3.z);\
 }\
 \
 \
 void main() {\
-	gl_FragColor = vec4(0.0, 0.0, 0.0, (1.0-edgeFactor())*0.95);\
+	gl_FragColor = vec4(0.6, 0.6, 0.6, (1.0-edgeFactor())*0.95);\
 }";
 
 bool EditorGrid::init()
@@ -111,7 +111,7 @@ bool EditorGrid::init()
 	setGLProgram(shaderProgram);
 
 	//make alpha color take effect
-	setBlendFunc({ GL_ONE, GL_ONE_MINUS_SRC_ALPHA });
+	//setBlendFunc({ GL_ONE, GL_ONE_MINUS_SRC_ALPHA });
 	setCullFaceEnabled(false);
 	return true;
 }
