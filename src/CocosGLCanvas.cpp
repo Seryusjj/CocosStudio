@@ -17,6 +17,7 @@ enum
 };
 
 wxBEGIN_EVENT_TABLE(CocosGLCanvas, wxGLCanvas)
+
 EVT_PAINT(CocosGLCanvas::OnPaint)
 EVT_KEY_DOWN(CocosGLCanvas::OnKeyDown)
 EVT_MOUSEWHEEL(CocosGLCanvas::OnMouseWheel)
@@ -224,8 +225,6 @@ void CocosGLCanvas::OnMouseLeftDown(wxMouseEvent & event)
 
 void CocosGLCanvas::OnMouseLeftUp(wxMouseEvent & event)
 {
-	int a = 0;
-	a++;
 	SetFocus();
 }
 
@@ -238,6 +237,7 @@ void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent & event)
 void CocosGLCanvas::OnMouseMiddleUp(wxMouseEvent & event)
 {
 	middleDragAction = false;
+	SetFocus();
 }
 
 void CocosGLCanvas::OnMouseRightDown(wxMouseEvent & event)
@@ -249,6 +249,17 @@ void CocosGLCanvas::OnMouseRightDown(wxMouseEvent & event)
 void CocosGLCanvas::OnMouseRightUp(wxMouseEvent & event)
 {
 	rightDragAction = false;
+	SetFocus();
+}
+
+void adjustSpeed(float* x, float* y, float speed)
+{
+	float valueX = *x;
+	float valueY = *y;
+	if (valueX > 0)	*x = speed;
+	if (valueX < 0)	*x = -speed;
+	if (valueY > 0)	*y = speed;
+	if (valueY < 0)	*y = -speed;
 }
 
 void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
@@ -260,11 +271,7 @@ void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 			wxPoint point = event.GetPosition();
 			float x = point.x - pointOnDragStart.x;
 			float y = point.y - pointOnDragStart.y;
-			float speed = 0.2f;
-			if (x > 0)	x = speed;
-			if (x < 0)	x = -speed;
-			if (y > 0)	y = speed;
-			if (y < 0)	y = -speed;
+			adjustSpeed(&x, &y, 0.2f);
 			_scene->pan(-x, y);
 			//redraw view
 			Refresh(true);
@@ -275,11 +282,7 @@ void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 			wxPoint point = event.GetPosition();
 			float x = point.x - pointOnDragStart.x;
 			float y = point.y - pointOnDragStart.y;
-			float speed = 0.2f;
-			if (x > 0)	x = speed;
-			if (x < 0)	x = -speed;
-			if (y > 0)	y = speed;
-			if (y < 0)	y = -speed;
+			adjustSpeed(&x, &y, 0.2f);
 			_scene->rotateView(x, -y);
 			//redraw view
 			Refresh(true);

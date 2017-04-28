@@ -48,28 +48,52 @@ bool EditorScene3D::init()
 void EditorScene3D::zoom(float delta)
 {
 	//increase or reduce the length in delta factor
-	Vec3 vector = _cameraLookAtTarget - _camera->getPosition3D();
-	float cameraDistance = (vector).length();
-	Vec3 unitVector = (vector / cameraDistance);
-	Vec3 finalPos = _camera->getPosition3D() + (unitVector * delta);
+	Vec3 camPosition = _camera->getPosition3D();
+	Vec3 direction = _cameraLookAtTarget - camPosition;
+	direction.normalize();
+
+	Vec3 finalPos = camPosition + (direction * delta);
 
 	_camera->setPosition3D(_camera->getPosition3D().lerp(finalPos, 0.5f));
+
+	Vec3 diff = _camera->getPosition3D() - camPosition;
+	_cameraLookAtTarget += diff;
+	_camera->lookAt(_cameraLookAtTarget);
 }
 
 void EditorScene3D::pan(float deltaX, float deltaY)
 {
-	auto currentCamPos = _camera->getPosition3D();
-	auto nextPos = Vec3(currentCamPos.x + deltaX, currentCamPos.y + deltaY, currentCamPos.z);
+	Vec3 currentCamPos = _camera->getPosition3D();
+	Vec3 camDirection = _cameraLookAtTarget - currentCamPos;
 
-	_camera->setPosition3D(Vec3(currentCamPos.x + deltaX, currentCamPos.y + deltaY, currentCamPos.z));
+	camDirection.cross(_cameraUp);
+	camDirection.normalize();
+
+	//pan of cam pos
+	Vec3 next = currentCamPos + (deltaY * _cameraUp);
+	next = next + (deltaX * camDirection);
+
+	//pan look at target to keep this info up to date
+	_cameraLookAtTarget += (deltaY * _cameraUp);
+	_cameraLookAtTarget += (deltaX * camDirection);
+
+	//camDirection is the pan direction
+	_camera->setPosition3D(next);
+	_camera->lookAt(_cameraLookAtTarget);
 }
 
-void EditorScene3D::rotateView(float x, float y)
+void EditorScene3D::rotateView(float deltaX, float deltaY)
 {
-	Vec3 newLookAtTarget = Vec3(x, y, 0) + _cameraLookAtTarget;
-	newLookAtTarget = newLookAtTarget.lerp(_cameraLookAtTarget, 0.2f);
-	_camera->lookAt(newLookAtTarget);
-	_cameraLookAtTarget = newLookAtTarget;
+	Vec3 currentCamPos = _camera->getPosition3D();
+
+	Vec3 camDirection = _cameraLookAtTarget - currentCamPos;
+	camDirection.cross(_cameraUp);
+	camDirection.normalize();
+
+	_cameraLookAtTarget += (deltaY * _cameraUp);
+	_cameraLookAtTarget += (deltaX * camDirection);
+
+	_camera->lookAt(_cameraLookAtTarget);
 }
 
 bool  canBeSelected(cocos2d::Node * node)
@@ -81,17 +105,36 @@ bool  canBeSelected(cocos2d::Node * node)
 	return casted == nullptr;
 }
 
+cocos2d::Sprite3D * getIntersected(Ray& ray1, Node* parent)
+{
+	for (int i = 0; i < parent->getChildren().size(); i++)
+	{
+		Sprite3D* toEval = static_cast<Sprite3D*>(parent->getChildren().at(i));
+		const AABB& aabb = toEval->getAABBRecursively();
+		if (ray1.intersects(aabb) && canBeSelected(toEval))
+		{
+			return toEval;
+		}
+	}
+
+	for (int i = 0; i < parent->getChildren().size(); i++)
+	{
+		return getIntersected(ray1, parent->getChildren().at(i));
+	}
+
+	return nullptr;
+}
+
 cocos2d::Node * EditorScene3D::select(float x, float y)
 {
 	_drawAABB->clear();
+
 	auto lineColor = Color4F(0, 1, 0, 1);
 	Node * selection = nullptr;
-	//from
 	Vec3 from = _camera->getPosition3D();
-
 	Vec2 location(x, y);
-	//Vec3 nearP(from.x, from.y, from.z), farP(location.x, location.y, -from.z);
 	Vec3 nearP(location.x, location.y, 0.0f), farP(location.x, location.y, 1.0f);
+
 	auto size = Director::getInstance()->getWinSize();
 	_camera->unproject(size, &nearP, &nearP);
 	_camera->unproject(size, &farP, &farP);
@@ -99,22 +142,16 @@ cocos2d::Node * EditorScene3D::select(float x, float y)
 	dir.normalize();
 	Ray ray1(nearP, dir);
 
-	//Ray ray(from, (finalDir).getNormalized());
 	Vector<Node*>& children = this->getChildren();
 	Vec3 corners[8];
-	_drawAABB->drawLine(nearP, farP, lineColor);
-	for (const auto& iter : children)
+	Sprite3D * selected = getIntersected(ray1, this);
+	if (selected != nullptr)
 	{
-		if (static_cast<Sprite3D*>(iter) != nullptr) {
-			const AABB& aabb = static_cast<Sprite3D*>(iter)->getAABBRecursively();
-			if (_camera->isVisibleInFrustum(&aabb) && canBeSelected(iter) && ray1.intersects(aabb))
-			{
-				aabb.getCorners(corners);
-				selection = iter;
-				_drawAABB->drawCube(corners, lineColor);
-			}
-		}
+		selected->getAABB().getCorners(corners);
+		_drawAABB->drawCube(corners, lineColor);
 	}
+	selection = selected;
+
 	return selection;
 }
 
@@ -136,12 +173,13 @@ void EditorScene3D::createAndAddCamera()
 	_camera = Camera::createPerspective(60, (GLfloat)s.width / s.height, 0.1f, 2000);
 
 	// set parameters for camera
-	_camera->setPosition3D(Vec3(0, 20, 20));
-	_cameraLookAtTarget = Vec3(0, 0, 0);
-	_camera->lookAt(_cameraLookAtTarget, Vec3(0, 1, 0));
+	_camera->setPosition3D(Vec3(0, 1, 20));
+	_cameraLookAtTarget = Vec3::ZERO;
+	_cameraUp = Vec3::UNIT_Y;
+	_camera->lookAt(_cameraLookAtTarget, _cameraUp);
 
 	addChild(_camera); //add camera to the scene
-					  //Camera
+
 	_camera->setCameraFlag(cameraMask);
 
 	_currentCameraMask = (unsigned short)cameraMask;

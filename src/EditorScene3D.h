@@ -11,6 +11,7 @@ private:
 	cocos2d::DrawNode3D*             _drawAABB;
 	cocos2d::DrawNode3D*             _grid;
 	cocos2d::Vec3 _cameraLookAtTarget;
+	cocos2d::Vec3 _cameraUp;
 public:
 	static cocos2d::Scene* createScene();
 
