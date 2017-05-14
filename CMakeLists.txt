@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(CocosStudio)
-
+#set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(wxWidgets_CONFIGURATION "mswu")
 set(WX_USE_GL 1)
 set(BUILD_SHARED_LIBS on)
 set(CocosResources "${CMAKE_CURRENT_SOURCE_DIR}/Resources/CocosResources")
-set(WxWidgetsResources "${CMAKE_CURRENT_SOURCE_DIR}/src/wxWidgetsResources")
+set(WxWidgetsResources "${CMAKE_CURRENT_SOURCE_DIR}/Editor/src/wxWidgetsResources")
 
 if(UNIX)
         set(wxWidgets_USE_RELEASE --toolkit=base --prefix=/usr)
@@ -28,7 +29,7 @@ endif()
 
 
 
-find_package(wxWidgets COMPONENTS gl core base REQUIRED)
+find_package(wxWidgets COMPONENTS gl core aui base REQUIRED)
 
 
 if(UNIX)    
