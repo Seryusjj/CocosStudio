@@ -10,18 +10,22 @@
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
-#include <wx/sizer.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/bmpbuttn.h>
 #include <wx/gdicmn.h>
-#include <wx/panel.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
+#include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/panel.h>
 #include <wx/scrolwin.h>
 #include <wx/splitter.h>
-#include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
+#include <wx/aui/aui.h>
+#include <wx/aui/auibar.h>
 #include <wx/aui/auibook.h>
 #include <wx/menu.h>
 #include <wx/frame.h>
@@ -42,17 +46,25 @@ class MainFrame : public wxFrame
 		wxSplitterWindow* m_splitter4;
 		wxScrolledWindow* m_scrolledWindow3;
 		wxPanel* m_panel5;
+		wxBitmapButton* m_bpButton5;
 		wxPanel* m_panel6;
 		wxPanel* m_panel4;
 		wxSplitterWindow* splitterEngineView;
-		wxPanel* tab;
-		wxAuiNotebook* m_auinotebook2;
 		wxPanel* openGLContainer;
-		wxPanel* m_panel9;
+		wxAuiToolBar* m_auiToolBar14;
+		wxAuiToolBarItem* m_tool49; 
+		wxAuiToolBarItem* m_tool50; 
+		wxAuiToolBarItem* m_tool51; 
+		wxAuiToolBarItem* m_tool52; 
 		wxPanel* m_panel7;
-		wxMenuBar* m_menubar1;
-		wxMenu* m_menu1;
-		wxMenu* m_menu11;
+		wxAuiNotebook* m_auinotebook1;
+		wxPanel* m_panel71;
+		wxPanel* m_panel8;
+		wxMenuBar* m_menubar2;
+		wxMenu* m_menu5;
+		wxMenu* m_menu51;
+		wxMenu* m_menu6;
+		wxMenu* m_menu61;
 	
 	public:
 		
@@ -74,7 +86,7 @@ class MainFrame : public wxFrame
 		
 		void splitterEngineViewOnIdle( wxIdleEvent& )
 		{
-			splitterEngineView->SetSashPosition( 380 );
+			splitterEngineView->SetSashPosition( 418 );
 			splitterEngineView->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::splitterEngineViewOnIdle ), NULL, this );
 		}
 	

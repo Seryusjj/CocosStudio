@@ -18,7 +18,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
 	
-	splitPanleContainer = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+	splitPanleContainer = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE|wxSP_NOBORDER );
 	splitPanleContainer->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::splitPanleContainerOnIdle ), NULL, this );
 	splitPanleContainer->SetMinimumPaneSize( 50 );
 	
@@ -46,6 +46,11 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel5 = new wxPanel( m_scrolledWindow3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxGridSizer* gSizer1;
 	gSizer1 = new wxGridSizer( 0, 2, 0, 0 );
+	
+	m_bpButton5 = new wxBitmapButton( m_panel5, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|wxBU_LEFT );
+	m_bpButton5->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_SCROLLBAR ) );
+	
+	gSizer1->Add( m_bpButton5, 0, wxALL, 5 );
 	
 	
 	m_panel5->SetSizer( gSizer1 );
@@ -81,45 +86,54 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer41;
 	bSizer41 = new wxBoxSizer( wxHORIZONTAL );
 	
-	splitterEngineView = new wxSplitterWindow( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_LIVE_UPDATE );
+	splitterEngineView = new wxSplitterWindow( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_LIVE_UPDATE|wxSP_NOBORDER );
 	splitterEngineView->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::splitterEngineViewOnIdle ), NULL, this );
+	splitterEngineView->SetMinimumPaneSize( 50 );
 	
 	splitterEngineView->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	
-	tab = new wxPanel( splitterEngineView, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	openGLContainer = new wxPanel( splitterEngineView, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
-	m_auinotebook2 = new wxAuiNotebook( tab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TAB_FIXED_WIDTH );
-	openGLContainer = new wxPanel( m_auinotebook2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer9;
-	bSizer9 = new wxBoxSizer( wxVERTICAL );
+	m_auiToolBar14 = new wxAuiToolBar( openGLContainer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_HORZ_LAYOUT|wxAUI_TB_TEXT ); 
+	m_auiToolBar14->SetBackgroundColour( wxColour( 192, 192, 192 ) );
+	
+	m_tool49 = m_auiToolBar14->AddTool( wxID_ANY, wxT("tool"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	
+	m_tool50 = m_auiToolBar14->AddTool( wxID_ANY, wxT("tool"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	
+	m_tool51 = m_auiToolBar14->AddTool( wxID_ANY, wxT("tool"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	
+	m_tool52 = m_auiToolBar14->AddTool( wxID_ANY, wxT("tool"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	
+	m_auiToolBar14->Realize(); 
+	
+	bSizer6->Add( m_auiToolBar14, 0, wxALL, 5 );
 	
 	
-	openGLContainer->SetSizer( bSizer9 );
+	openGLContainer->SetSizer( bSizer6 );
 	openGLContainer->Layout();
-	bSizer9->Fit( openGLContainer );
-	m_auinotebook2->AddPage( openGLContainer, wxT("3D View"), true, wxNullBitmap );
-	m_panel9 = new wxPanel( m_auinotebook2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_auinotebook2->AddPage( m_panel9, wxT("Game View"), false, wxNullBitmap );
-	
-	bSizer6->Add( m_auinotebook2, 1, wxEXPAND | wxALL, 0 );
-	
-	
-	tab->SetSizer( bSizer6 );
-	tab->Layout();
-	bSizer6->Fit( tab );
+	bSizer6->Fit( openGLContainer );
 	m_panel7 = new wxPanel( splitterEngineView, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_panel7->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_GRAYTEXT ) );
 	
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxVERTICAL );
 	
+	m_auinotebook1 = new wxAuiNotebook( m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_TAB_FIXED_WIDTH|wxAUI_NB_TAB_SPLIT );
+	m_panel71 = new wxPanel( m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_auinotebook1->AddPage( m_panel71, wxT("Scene"), true, wxNullBitmap );
+	m_panel8 = new wxPanel( m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_auinotebook1->AddPage( m_panel8, wxT("Properties"), false, wxNullBitmap );
+	
+	bSizer8->Add( m_auinotebook1, 1, wxEXPAND | wxALL, 0 );
+	
 	
 	m_panel7->SetSizer( bSizer8 );
 	m_panel7->Layout();
 	bSizer8->Fit( m_panel7 );
-	splitterEngineView->SplitVertically( tab, m_panel7, 380 );
+	splitterEngineView->SplitVertically( openGLContainer, m_panel7, 418 );
 	bSizer41->Add( splitterEngineView, 1, wxEXPAND, 5 );
 	
 	
@@ -132,18 +146,22 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	
 	this->SetSizer( bSizer1 );
 	this->Layout();
-	m_menubar1 = new wxMenuBar( 0 );
-	m_menubar1->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
-	m_menubar1->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
+	m_menubar2 = new wxMenuBar( 0 );
+	m_menu5 = new wxMenu();
+	m_menu51 = new wxMenu();
+	wxMenuItem* m_menu51Item = new wxMenuItem( m_menu5, wxID_ANY, wxT("MyMenu"), wxEmptyString, wxITEM_NORMAL, m_menu51 );
+	m_menu5->Append( m_menu51Item );
 	
-	m_menu1 = new wxMenu();
-	m_menu11 = new wxMenu();
-	wxMenuItem* m_menu11Item = new wxMenuItem( m_menu1, wxID_ANY, wxT("MyMenu"), wxEmptyString, wxITEM_NORMAL, m_menu11 );
-	m_menu1->Append( m_menu11Item );
+	m_menubar2->Append( m_menu5, wxT("MyMenu") ); 
 	
-	m_menubar1->Append( m_menu1, wxT("MyMenu") ); 
+	m_menu6 = new wxMenu();
+	m_menu61 = new wxMenu();
+	wxMenuItem* m_menu61Item = new wxMenuItem( m_menu6, wxID_ANY, wxT("MyMenu"), wxEmptyString, wxITEM_NORMAL, m_menu61 );
+	m_menu6->Append( m_menu61Item );
 	
-	this->SetMenuBar( m_menubar1 );
+	m_menubar2->Append( m_menu6, wxT("MyMenu") ); 
+	
+	this->SetMenuBar( m_menubar2 );
 	
 	
 	this->Centre( wxBOTH );
