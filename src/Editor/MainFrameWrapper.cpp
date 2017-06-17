@@ -15,8 +15,17 @@ wxEND_EVENT_TABLE()
 MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 
 {
-	//int attribs[] = { WX_GL_FRAMEBUFFER_SRGB,WX_GL_ROBUST_ACCESS, WX_GL_DOUBLEBUFFER, 0 };
-	cocosglCanvas = new CocosGLCanvas(openGLContainer);
+	int attribs[] = 
+	{ 
+		WX_GL_RGBA,
+		WX_GL_DEPTH_SIZE, 16,
+		WX_GL_DOUBLEBUFFER,
+		WX_GL_SAMPLE_BUFFERS,1,
+		WX_GL_SAMPLES,4,
+	0 };
+
+	cocosglCanvas = new CocosGLCanvas(openGLContainer, attribs);
+	
 	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
 	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
 	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
@@ -28,6 +37,8 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	attr.greenBits = glContextAttrs.greenBits;
 	attr.redBits = glContextAttrs.redBits;
 	attr.stencilBits = glContextAttrs.stencilBits;
+	//attr.RGBA().Depth(16).DoubleBuffer().SampleBuffers(1).Samplers(4);
+	//SetNeedsARB();
 
 	cocosglCanvas->setGLContextAttrs(attr);
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
