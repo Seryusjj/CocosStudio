@@ -38,13 +38,7 @@ static int register_all_packages()
 	return 0; //flag for packages manager
 }
 
-void MyApp::initGLContextAttrs()
-{
-	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
-	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
 
-	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
-}
 
 bool MyApp::applicationDidFinishLaunching()
 {

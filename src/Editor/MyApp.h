@@ -13,7 +13,6 @@ public:
 	virtual bool OnInit() override;
 	virtual int OnExit() override;
 
-	virtual void initGLContextAttrs();
 
 	/**
 	@brief    Implement Director and Scene init code here.

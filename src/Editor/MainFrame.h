@@ -57,9 +57,9 @@ class MainFrame : public wxFrame
 		wxAuiToolBarItem* m_tool51; 
 		wxAuiToolBarItem* m_tool52; 
 		wxPanel* m_panel7;
-		wxAuiNotebook* m_auinotebook1;
-		wxPanel* m_panel71;
-		wxPanel* m_panel8;
+		wxAuiNotebook* sceneAndPropertiesNotebook;
+		wxPanel* sceneTab;
+		wxPanel* propertiesTab;
 		wxMenuBar* m_menubar2;
 		wxMenu* m_menu5;
 		wxMenu* m_menu51;
@@ -86,7 +86,7 @@ class MainFrame : public wxFrame
 		
 		void splitterEngineViewOnIdle( wxIdleEvent& )
 		{
-			splitterEngineView->SetSashPosition( 418 );
+			splitterEngineView->SetSashPosition( 436 );
 			splitterEngineView->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::splitterEngineViewOnIdle ), NULL, this );
 		}
 	

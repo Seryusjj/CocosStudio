@@ -109,7 +109,7 @@ bool EditorGrid::init()
 	shaderProgram->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_COLOR, GLProgram::VERTEX_ATTRIB_COLOR);
 	//set shader
 	setGLProgram(shaderProgram);
-
+	setOpacity(254);
 	//make alpha color take effect
 	//setBlendFunc(BlendFunc::ALPHA_PREMULTIPLIED);
 	setCullFaceEnabled(false);

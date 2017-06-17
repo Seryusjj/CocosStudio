@@ -190,12 +190,12 @@ void EditorScene3D::createAndAddReferenceArrows()
 	//// add some objects
 	auto sprite = Sprite3D::create("boss.obj", "boss.png");
 	sprite->setName("boss");
-	sprite->setOpacity(254);
+	//sprite->setOpacity(254);
 	sprite->setScale(1.00f / sprite->getBoundingBox().size.width);//queremos con size 1
-	sprite->setPosition3D(Vec3(0, 0, 0));
+	sprite->setPosition3D(Vec3(0, -sprite->getBoundingBox().size.height*0.5f, 0));
 	auto width = sprite->getBoundingBox().size;
 	this->addChild(sprite);
-
+	
 	auto arrowSet = Sprite3D::create();
 	arrowSet->setName("ArrowSet");
 

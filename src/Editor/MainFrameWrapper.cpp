@@ -15,9 +15,21 @@ wxEND_EVENT_TABLE()
 MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 
 {
-	int attribs[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0 };
-	cocosglCanvas = new CocosGLCanvas(openGLContainer, attribs);
+	//int attribs[] = { WX_GL_FRAMEBUFFER_SRGB,WX_GL_ROBUST_ACCESS, WX_GL_DOUBLEBUFFER, 0 };
+	cocosglCanvas = new CocosGLCanvas(openGLContainer);
+	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
+	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
+	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
+	// Setters, allowing chained calls
+	GLContextAttrs attr;
+	attr.alphaBits = glContextAttrs.alphaBits;
+	attr.blueBits = glContextAttrs.blueBits;
+	attr.depthBits = glContextAttrs.depthBits;
+	attr.greenBits = glContextAttrs.greenBits;
+	attr.redBits = glContextAttrs.redBits;
+	attr.stencilBits = glContextAttrs.stencilBits;
 
+	cocosglCanvas->setGLContextAttrs(attr);
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
 	openGLContainer->GetSizer()->Fit(openGLContainer);
 }

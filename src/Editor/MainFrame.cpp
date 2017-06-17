@@ -96,8 +96,8 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
-	m_auiToolBar14 = new wxAuiToolBar( openGLContainer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_HORZ_LAYOUT|wxAUI_TB_TEXT ); 
-	m_auiToolBar14->SetBackgroundColour( wxColour( 192, 192, 192 ) );
+	m_auiToolBar14 = new wxAuiToolBar( openGLContainer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_GRIPPER|wxAUI_TB_HORZ_LAYOUT|wxAUI_TB_TEXT ); 
+	m_auiToolBar14->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND ) );
 	
 	m_tool49 = m_auiToolBar14->AddTool( wxID_ANY, wxT("tool"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
 	
@@ -121,19 +121,19 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxVERTICAL );
 	
-	m_auinotebook1 = new wxAuiNotebook( m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_TAB_FIXED_WIDTH|wxAUI_NB_TAB_SPLIT );
-	m_panel71 = new wxPanel( m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_auinotebook1->AddPage( m_panel71, wxT("Scene"), true, wxNullBitmap );
-	m_panel8 = new wxPanel( m_auinotebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_auinotebook1->AddPage( m_panel8, wxT("Properties"), false, wxNullBitmap );
+	sceneAndPropertiesNotebook = new wxAuiNotebook( m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_TAB_FIXED_WIDTH|wxAUI_NB_TAB_MOVE|wxAUI_NB_TAB_SPLIT );
+	sceneTab = new wxPanel( sceneAndPropertiesNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	sceneAndPropertiesNotebook->AddPage( sceneTab, wxT("Scene"), true, wxNullBitmap );
+	propertiesTab = new wxPanel( sceneAndPropertiesNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	sceneAndPropertiesNotebook->AddPage( propertiesTab, wxT("Properties"), false, wxNullBitmap );
 	
-	bSizer8->Add( m_auinotebook1, 1, wxEXPAND | wxALL, 0 );
+	bSizer8->Add( sceneAndPropertiesNotebook, 1, wxEXPAND | wxALL, 0 );
 	
 	
 	m_panel7->SetSizer( bSizer8 );
 	m_panel7->Layout();
 	bSizer8->Fit( m_panel7 );
-	splitterEngineView->SplitVertically( openGLContainer, m_panel7, 418 );
+	splitterEngineView->SplitVertically( openGLContainer, m_panel7, 436 );
 	bSizer41->Add( splitterEngineView, 1, wxEXPAND, 5 );
 	
 	
