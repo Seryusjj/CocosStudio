@@ -4,11 +4,8 @@
 //helpers
 
 //MAIN FRAME
-enum { NEW_STEREO_WINDOW = wxID_HIGHEST + 1 };
 
 wxBEGIN_EVENT_TABLE(MainFrameWrapper, MainFrame)
-EVT_MENU(wxID_NEW, MainFrameWrapper::OnNewWindow)
-EVT_MENU(NEW_STEREO_WINDOW, MainFrameWrapper::OnNewStereoWindow)
 EVT_MENU(wxID_CLOSE, MainFrameWrapper::OnClose)
 wxEND_EVENT_TABLE()
 
@@ -43,6 +40,15 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	cocosglCanvas->setGLContextAttrs(attr);
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
 	openGLContainer->GetSizer()->Fit(openGLContainer);
+
+	wxString execName = "CocosStudioUI.exe";
+	wxString exePath = wxStandardPaths::Get().GetExecutablePath();
+	exePath = exePath.substr(0, exePath.length() - execName.length());
+	wxString dirFromExecLocation = exePath+ "Resources\\wxWidgetsResources\\button_place_holder16x16.bmp";
+
+
+		
+
 }
 
 MainFrameWrapper::~MainFrameWrapper() {
@@ -55,12 +61,5 @@ void MainFrameWrapper::OnClose(wxCommandEvent & event)
 	Close(true);
 }
 
-void MainFrameWrapper::OnNewWindow(wxCommandEvent & event)
-{
-	new MainFrameWrapper(false);
-}
 
-void MainFrameWrapper::OnNewStereoWindow(wxCommandEvent & event)
-{
-	new MainFrameWrapper(false);
-}
+

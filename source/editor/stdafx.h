@@ -11,8 +11,10 @@
 	
 	
 	#include "cocos2d.h"
-	
-	
+	#include <wx/aui/aui.h>
+	#include <wx/grid.h>
+	#include <wx/treectrl.h>
+	#include <wx/stdpaths.h>
 	#include <wx/artprov.h>
 	#include <wx/xrc/xmlres.h>
 	#include <wx/panel.h>
@@ -57,6 +59,10 @@
 	#undef ssize_t		
 		//wxwidgets includes
 	#define ssize_t wxInt32
+		#include <wx/aui/aui.h>
+		#include <wx/grid.h>
+		#include <wx/treectrl.h>
+		#include <wx/stdpaths.h>
 		#include <wx/artprov.h>
 		#include <wx/xrc/xmlres.h>
 		#include <wx/panel.h>

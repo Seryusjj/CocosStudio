@@ -18,7 +18,7 @@ std::vector< MeshVertexAttrib > attribs = {
 int perVertexSizeInFloat = 12;  //3+4
 
 float const cellSize = 1.0f;
-float const gridSize = 50;//gridSize*gridSize grid
+float const gridSize = 25;//gridSize*gridSize grid
 
 std::vector< float > vertices1;
 

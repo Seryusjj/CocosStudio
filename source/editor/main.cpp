@@ -4,6 +4,13 @@
 #include "MyApp.h"
 #include "EditorScene3D.h"
 
+
+#if WIN32
+#pragma comment(linker,"\"/manifestdependency:type='win32' \
+name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#endif
+
 wxIMPLEMENT_APP(MyApp);
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
@@ -20,11 +27,14 @@ bool MyApp::OnInit()
 {
 	if (!wxApp::OnInit())
 		return false;
+
+	//wxInitAllImageHandlers();
 	//needed on win32
 	cocos2d::FileUtils::getInstance()->addSearchPath("Resources");
 
 	frame = new MainFrameWrapper(false);
 	frame->Show(true);
+
 	return true;
 }
 
@@ -37,8 +47,6 @@ static int register_all_packages()
 {
 	return 0; //flag for packages manager
 }
-
-
 
 bool MyApp::applicationDidFinishLaunching()
 {

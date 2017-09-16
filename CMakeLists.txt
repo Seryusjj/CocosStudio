@@ -100,7 +100,7 @@ set(COCOS2D_LIBS  ${PNG_LIBRARIES}
 if ( WIN32 )
   
     set(COCOS2D_LIBS  ${COCOS2D_LIBS}
-                      ${COCOS2D_LIB_DIR}/lua51-2015.lib
+                      #${COCOS2D_LIB_DIR}/lua51-2015.lib
                       ${COCOS2D_LIB_DIR}/libsimulator_2015.lib
                       ${COCOS2D_LIB_DIR}/librecast_2015.lib
                       ${COCOS2D_LIB_DIR}/libluacocos2d_2015.lib
@@ -145,5 +145,5 @@ endif()
 
 
 
-add_subdirectory(src)
+add_subdirectory(source)
 
