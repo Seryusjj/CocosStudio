@@ -28,6 +28,11 @@ bool MyApp::OnInit()
 	if (!wxApp::OnInit())
 		return false;
 
+	//change application working dir or current dir to make relative paths to images work
+	wxString fileLocation = wxStandardPaths::Get().GetExecutablePath();
+	fileLocation = wxFileName(fileLocation).GetPath();
+	wxSetWorkingDirectory(fileLocation);
+
 	//wxInitAllImageHandlers();
 	//needed on win32
 	cocos2d::FileUtils::getInstance()->addSearchPath("Resources");

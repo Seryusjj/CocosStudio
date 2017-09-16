@@ -10,18 +10,20 @@
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
-#include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/gdicmn.h>
+#include <wx/panel.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/sizer.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/notebook.h>
 #include <wx/scrolwin.h>
+#include <wx/menu.h>
+#include <wx/toolbar.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
 
@@ -41,6 +43,10 @@ class MainFrame : public wxFrame
 		wxNotebook* m_notebook3;
 		wxPanel* openGLContainer;
 		wxScrolledWindow* m_scrolledWindow_properties;
+		wxMenuBar* m_menubar;
+		wxMenu* m_menu1;
+		wxToolBar* m_toolBar3;
+		wxToolBarToolBase* m_tool1; 
 	
 	public:
 		

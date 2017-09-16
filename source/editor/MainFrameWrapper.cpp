@@ -12,8 +12,8 @@ wxEND_EVENT_TABLE()
 MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 
 {
-	int attribs[] = 
-	{ 
+	int attribs[] =
+	{
 		WX_GL_RGBA,
 		WX_GL_DEPTH_SIZE, 16,
 		WX_GL_DOUBLEBUFFER,
@@ -22,7 +22,7 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	0 };
 
 	cocosglCanvas = new CocosGLCanvas(openGLContainer, attribs);
-	
+
 	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
 	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
 	cocos2d::GLView::setGLContextAttrs(glContextAttrs);
@@ -40,15 +40,6 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	cocosglCanvas->setGLContextAttrs(attr);
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
 	openGLContainer->GetSizer()->Fit(openGLContainer);
-
-	wxString execName = "CocosStudioUI.exe";
-	wxString exePath = wxStandardPaths::Get().GetExecutablePath();
-	exePath = exePath.substr(0, exePath.length() - execName.length());
-	wxString dirFromExecLocation = exePath+ "Resources\\wxWidgetsResources\\button_place_holder16x16.bmp";
-
-
-		
-
 }
 
 MainFrameWrapper::~MainFrameWrapper() {
@@ -60,6 +51,3 @@ void MainFrameWrapper::OnClose(wxCommandEvent & event)
 	// true is to force the frame to close
 	Close(true);
 }
-
-
-

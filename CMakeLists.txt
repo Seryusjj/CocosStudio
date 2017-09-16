@@ -8,7 +8,7 @@ set(wxWidgets_CONFIGURATION "mswu")
 set(WX_USE_GL 1)
 set(BUILD_SHARED_LIBS on)
 set(CocosResources "${CMAKE_CURRENT_SOURCE_DIR}/Resources/CocosResources")
-set(WxWidgetsResources "${CMAKE_CURRENT_SOURCE_DIR}/Editor/src/wxWidgetsResources")
+set(WxWidgetsResources "${CMAKE_CURRENT_SOURCE_DIR}/source/editor/wxWidgetsResources")
 
 if(UNIX)
         set(wxWidgets_USE_RELEASE --toolkit=base --prefix=/usr)

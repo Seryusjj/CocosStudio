@@ -72,7 +72,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #copy resources from WxWidgetsResources folder for buttons icons and all this stuff
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                                   ${WxWidgetsResources} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/wxWidgetsResources)
+                                   ${WxWidgetsResources} $<TARGET_FILE_DIR:${PROJECT_NAME}>/wxWidgetsResources)
 								   
 								   
 
