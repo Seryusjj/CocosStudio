@@ -15,7 +15,11 @@ set(SRCS	main.cpp
 			EditorGrid.cpp
 			EditorGrid.h
 			DrawNode3D.cpp
-			DrawNode3D.h)
+			DrawNode3D.h
+			CustomDockArt.h
+			CustomDockArt.cpp
+			CustomTabArt.h
+			CustomTabArt.cpp)
 
 
 include(${wxWidgets_USE_FILE})

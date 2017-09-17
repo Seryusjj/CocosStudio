@@ -55,7 +55,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	openGLContainer->SetSizer( bSizer10 );
 	openGLContainer->Layout();
 	bSizer10->Fit( openGLContainer );
-	m_notebook3->AddPage( openGLContainer, wxT("scene"), false );
+	m_notebook3->AddPage( openGLContainer, _("scene"), false );
 	
 	m_scrolledWindow_properties = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxNO_BORDER|wxVSCROLL );
 	m_scrolledWindow_properties->SetScrollRate( 5, 5 );
@@ -71,15 +71,15 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menubar = new wxMenuBar( 0 );
 	m_menu1 = new wxMenu();
 	wxMenuItem* m_menuItem1;
-	m_menuItem1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("New project...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( _("New project...") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_menuItem1 );
 	
-	m_menubar->Append( m_menu1, wxT("File") ); 
+	m_menubar->Append( m_menu1, _("File") ); 
 	
 	this->SetMenuBar( m_menubar );
 	
 	m_toolBar3 = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT|wxTB_HORIZONTAL ); 
-	m_tool1 = m_toolBar3->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("wxWidgetsResources/button_place_holder16x16.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	m_tool1 = m_toolBar3->AddTool( wxID_ANY, _("tool"), wxBitmap( wxT("wxWidgetsResources/button_place_holder16x16.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
 	
 	m_toolBar3->Realize();
 	m_mgr.AddPane( m_toolBar3, wxAuiPaneInfo() .Top() .CaptionVisible( false ).CloseButton( false ).PaneBorder( false ).Movable( false ).Dock().Resizable().FloatingSize( wxSize( 50,70 ) ).DockFixed( true ).BottomDockable( false ).Floatable( false ).Layer( 1 ) );

@@ -11,6 +11,10 @@
 	
 	
 	#include "cocos2d.h"
+
+	#include <wx/aui/dockart.h>
+	#include <wx/aui/framemanager.h>
+	#include <wx/window.h>
 	#include <wx/aui/aui.h>
 	#include <wx/grid.h>
 	#include <wx/treectrl.h>
@@ -44,11 +48,13 @@
 #if WIN32
 	#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 	
-	// Windows Header Files:
-	#include <windows.h>
-	#include <tchar.h>
+
 	//stl includes
 	#include <functional>
+	#include <string>       // std::string
+	//#include <iostream>     // std::cout
+	//#include <sstream>      // std::stringstream
+
 	
 	//cocos2d-x includes
 	#define ssize_t SSIZE_T
@@ -59,6 +65,14 @@
 	#undef ssize_t		
 		//wxwidgets includes
 	#define ssize_t wxInt32
+
+
+
+		#include <wx/aui/tabart.h>
+		#include <wx/aui/auibook.h>
+		#include <wx/aui/dockart.h>
+		#include <wx/aui/framemanager.h>
+		#include <wx/window.h>
 		#include <wx/aui/aui.h>
 		#include <wx/grid.h>
 		#include <wx/treectrl.h>

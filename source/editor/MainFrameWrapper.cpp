@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "MainFrameWrapper.h"
-
+#include "CustomDockArt.h"
 //helpers
 
 //MAIN FRAME
@@ -40,6 +40,9 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	cocosglCanvas->setGLContextAttrs(attr);
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
 	openGLContainer->GetSizer()->Fit(openGLContainer);
+
+	
+	m_mgr.SetArtProvider(new CustomDockArt());
 }
 
 MainFrameWrapper::~MainFrameWrapper() {
