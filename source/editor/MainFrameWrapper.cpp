@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainFrameWrapper.h"
 #include "CustomDockArt.h"
+#include "CocosGLCanvas3DController.h"
 //helpers
 
 //MAIN FRAME
@@ -21,7 +22,7 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 		WX_GL_SAMPLES,4,
 	0 };
 
-	cocosglCanvas = new CocosGLCanvas(openGLContainer, attribs);
+	cocosglCanvas = new CocosGLCanvas(openGLContainer, new CocosGLCanvas3DController(), attribs);
 
 	// set OpenGL context attributes: red,green,blue,alpha,depth,stencil
 	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
@@ -41,7 +42,6 @@ MainFrameWrapper::MainFrameWrapper(bool stereoWindow) : MainFrame(nullptr)
 	openGLContainer->GetSizer()->Add(cocosglCanvas, 1, wxEXPAND, 5);
 	openGLContainer->GetSizer()->Fit(openGLContainer);
 
-	
 	m_mgr.SetArtProvider(new CustomDockArt());
 }
 

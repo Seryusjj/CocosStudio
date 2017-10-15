@@ -19,7 +19,12 @@ set(SRCS	main.cpp
 			CustomDockArt.h
 			CustomDockArt.cpp
 			CustomTabArt.h
-			CustomTabArt.cpp)
+			CustomTabArt.cpp
+			CocosGLCanvasController.h			
+			CocosGLCanvas3DController.h
+			CocosGLCanvas3DController.cpp
+			CocosGLCanvas2DController.h
+			CocosGLCanvas2DController.cpp)
 
 
 include(${wxWidgets_USE_FILE})

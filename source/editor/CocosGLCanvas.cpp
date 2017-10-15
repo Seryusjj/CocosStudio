@@ -7,9 +7,6 @@ static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 bool _initialized = false;
 bool _shown = false;
 wxSize _previousSize;
-bool middleDragAction = false;
-bool rightDragAction = false;
-wxPoint pointOnDragStart;
 
 enum
 {
@@ -96,17 +93,6 @@ static bool glew_dynamic_binding()
 	return true;
 }
 
-//get a wxpoint an converr it to cocos2dx coordinate
-wxPoint inline CocosGLCanvas::pointToCocos(const wxPoint& originalWxPoint)
-{
-	auto realFrameSize = cocos2d::GLView::getFrameSize();
-	auto screenSize = cocos2d::Director::getInstance()->getWinSize();
-
-	float y = (originalWxPoint.y * screenSize.height) / realFrameSize.height;
-	float x = (originalWxPoint.x * screenSize.width) / realFrameSize.width;
-	auto result = wxPoint(x, y);
-	return result;
-}
 bool CocosGLCanvas::initGlew()
 {
 	wxGLCanvas::SetCurrent(*m_context);
@@ -177,34 +163,12 @@ void CocosGLCanvas::OnPaint(wxPaintEvent & event)
 
 void CocosGLCanvas::OnKeyDown(wxKeyEvent& event)
 {
-	switch (event.GetKeyCode())
-	{
-	case WXK_SPACE:
-		if (_drawTimer.IsRunning())
-			_drawTimer.Stop();
-		else
-			_drawTimer.Start(25);
-		break;
-
-	default:
-		event.Skip();
-		return;
-	}
+	_controller->OnKeyDown(event);
 }
 
 void CocosGLCanvas::OnMouseWheel(wxMouseEvent & event)
 {
-	if (!middleDragAction && !rightDragAction) {
-		int rotation = event.GetWheelRotation();
-		if (rotation != 0) {
-			float zoomFactor = 1.0f;
-			if (rotation < 0)
-				zoomFactor *= -1;
-
-			_scene->zoom(zoomFactor);
-			Refresh(true);
-		}
-	}
+	_controller->OnMouseWheel(event);
 }
 
 void CocosGLCanvas::OnDrawTimer(wxTimerEvent& WXUNUSED(event))
@@ -215,88 +179,40 @@ void CocosGLCanvas::OnDrawTimer(wxTimerEvent& WXUNUSED(event))
 
 void CocosGLCanvas::OnMouseLeftDown(wxMouseEvent & event)
 {
-	wxPoint point = pointToCocos(event.GetPosition());
-	_scene->removeBoundingBox(_currentSelection);
-	auto selection = _scene->select(point.x, point.y);
-	_scene->addBoundingBox(selection);
-	_currentSelection = selection;
-	Refresh(true);
+	_controller->OnMouseLeftDown(event);
 }
 
 void CocosGLCanvas::OnMouseLeftUp(wxMouseEvent & event)
 {
-	SetFocus();
+	_controller->OnMouseLeftUp(event);
 }
 
 void CocosGLCanvas::OnMouseMiddleDown(wxMouseEvent & event)
 {
-	pointOnDragStart = event.GetPosition();
-	middleDragAction = true;
+	_controller->OnMouseMiddleDown(event);
 }
 
 void CocosGLCanvas::OnMouseMiddleUp(wxMouseEvent & event)
 {
-	middleDragAction = false;
-	SetFocus();
+	_controller->OnMouseMiddleUp(event);
 }
 
 void CocosGLCanvas::OnMouseRightDown(wxMouseEvent & event)
 {
-	pointOnDragStart = event.GetPosition();
-	rightDragAction = true;
+	_controller->OnMouseRightDown(event);
 }
 
 void CocosGLCanvas::OnMouseRightUp(wxMouseEvent & event)
 {
-	rightDragAction = false;
-	SetFocus();
-}
-
-void adjustSpeed(float* x, float* y, float speed)
-{
-	float valueX = *x;
-	float valueY = *y;
-	if (valueX > 0)	*x = speed;
-	if (valueX < 0)	*x = -speed;
-	if (valueY > 0)	*y = speed;
-	if (valueY < 0)	*y = -speed;
+	_controller->OnMouseRightUp(event);
 }
 
 void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 {
-	if (event.Dragging())
-	{
-		if (middleDragAction)
-		{
-			wxPoint point = event.GetPosition();
-			float x = point.x - pointOnDragStart.x;
-			float y = point.y - pointOnDragStart.y;
-			adjustSpeed(&x, &y, 0.1f);
-			_scene->pan(-x, y);
-			//redraw view
-			Refresh(true);
-			pointOnDragStart = event.GetPosition();
-		}
-		else if (rightDragAction)
-		{
-			wxPoint point = event.GetPosition();
-			float x = point.x - pointOnDragStart.x;
-			float y = point.y - pointOnDragStart.y;
-			adjustSpeed(&x, &y, 0.2f);
-			_scene->rotateView(x, -y);
-			//redraw view
-			Refresh(true);
-			pointOnDragStart = event.GetPosition();
-		}
-	}
-	else
-	{
-		rightDragAction = false;
-		middleDragAction = false;
-	}
+	_controller->OnMouseMoveEvent(event);
 }
 
-CocosGLCanvas::CocosGLCanvas(wxWindow *parent, int *attribList)
+CocosGLCanvas::CocosGLCanvas(wxWindow *parent, CocosGLCanvasController* controller, int *attribList)
 	: wxGLCanvas(parent, wxID_ANY, attribList,
 		wxDefaultPosition, wxDefaultSize,
 		wxFULL_REPAINT_ON_RESIZE),
@@ -304,6 +220,8 @@ CocosGLCanvas::CocosGLCanvas(wxWindow *parent, int *attribList)
 {
 	m_context = new wxGLContext(this);
 	_frameZoomFactor = 1.0f;
+	_controller = controller;
+	_controller->SetParent(this);
 }
 
 bool CocosGLCanvas::initGl()
@@ -326,6 +244,8 @@ bool CocosGLCanvas::initGl()
 
 	setDesignResolutionSize(mediumResolutionSize.width, mediumResolutionSize.height, ResolutionPolicy::NO_BORDER);
 
+	_controller->InitController();
+
 	// turn on display FPS
 	director->setDisplayStats(true);
 
@@ -333,11 +253,8 @@ bool CocosGLCanvas::initGl()
 	director->setAnimationInterval(1.0f / 30);
 
 	// create a scene. it's an autorelease object
-	auto scene = EditorScene3D::createScene();
+	auto scene = _controller->GetCurrentScene();
 	director->runWithScene(scene);
-
-	auto layer = scene->getChildByTag(0);
-	_scene = dynamic_cast<EditorScene3D*>(layer);
 
 	// run
 	//getAnimationInterval is for 1s, get for 1ms
