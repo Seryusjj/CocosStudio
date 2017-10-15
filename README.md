@@ -21,4 +21,5 @@ After all the dependencies are compiled you can call Cmake and build the editor.
 Just create a build directory and call cmake .. from it. This is going to generate your visual studio solution and you are ready to go.
 
 Here is a screenshot of the current state of the application.
-![] (https://github.com/Seryusjj/CocosStudio/blob/master/docs/editor.PNG)
+
+![](https://raw.githubusercontent.com/Seryusjj/CocosStudio/master/docs/editor.PNG)
