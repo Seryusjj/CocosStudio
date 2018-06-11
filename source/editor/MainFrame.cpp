@@ -21,13 +21,20 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel_objects = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxTAB_TRAVERSAL );
 	m_mgr.AddPane( m_panel_objects, wxAuiPaneInfo() .Left() .PinButton( true ).Dock().Resizable().FloatingSize( wxDefaultSize ).TopDockable( false ).MinSize( wxSize( 200,200 ) ) );
 	
-	wxBoxSizer* bSizer53;
-	bSizer53 = new wxBoxSizer( wxVERTICAL );
+	wxGridSizer* gSizer1;
+	gSizer1 = new wxGridSizer( 0, 2, 0, 0 );
+	
+	m_bpButton2 = new wxBitmapButton( m_panel_objects, wxID_ANY, wxBitmap( wxT("wxWidgetsResources/Object.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton2->SetForegroundColour( wxColour( 64, 64, 64 ) );
+	m_bpButton2->SetBackgroundColour( wxColour( 64, 64, 64 ) );
+	m_bpButton2->SetToolTip( _("Create a node, can be used as container") );
+	
+	gSizer1->Add( m_bpButton2, 0, wxALL, 5 );
 	
 	
-	m_panel_objects->SetSizer( bSizer53 );
+	m_panel_objects->SetSizer( gSizer1 );
 	m_panel_objects->Layout();
-	bSizer53->Fit( m_panel_objects );
+	gSizer1->Fit( m_panel_objects );
 	m_panel_resources = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER|wxTAB_TRAVERSAL );
 	m_mgr.AddPane( m_panel_resources, wxAuiPaneInfo() .Left() .PinButton( true ).Dock().Resizable().FloatingSize( wxSize( 50,67 ) ).TopDockable( false ).MinSize( wxSize( 200,200 ) ) );
 	

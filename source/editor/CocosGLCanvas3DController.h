@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CocosGLCanvasController.h"
+#include "AbstractCocosGLCanvasController.h"
 #include "EditorScene3D.h"
 
-class CocosGLCanvas3DController : public CocosGLCanvasController
+class CocosGLCanvas3DController : public AbstractCocosGLCanvasController
 {
 private:
 	EditorScene3D * _sceneLogicLayer;
@@ -29,7 +29,7 @@ public:
 			return _sceneLogicLayer;
 		else
 		{
-			_sceneLogicLayer = CocosGLCanvasController::GetCurrentLogicLayerInternal<EditorScene3D>();
+			_sceneLogicLayer = AbstractCocosGLCanvasController::GetCurrentLogicLayerInternal<EditorScene3D>();
 			return _sceneLogicLayer;
 		}
 	}

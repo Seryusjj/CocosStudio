@@ -11,16 +11,18 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include <wx/sizer.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/bmpbuttn.h>
 #include <wx/gdicmn.h>
-#include <wx/panel.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
+#include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/panel.h>
 #include <wx/notebook.h>
 #include <wx/scrolwin.h>
 #include <wx/menu.h>
@@ -40,6 +42,7 @@ class MainFrame : public wxFrame
 	
 	protected:
 		wxPanel* m_panel_objects;
+		wxBitmapButton* m_bpButton2;
 		wxPanel* m_panel_resources;
 		wxNotebook* m_notebook3;
 		wxPanel* openGLContainer;

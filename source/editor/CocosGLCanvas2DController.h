@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CocosGLCanvasController.h"
+#include "AbstractCocosGLCanvasController.h"
 
-class CocosGLCanvas2DController : public CocosGLCanvasController
+class CocosGLCanvas2DController : public AbstractCocosGLCanvasController
 {
 private:
 	//EditorScene3D * _sceneLogicLayer;

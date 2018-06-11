@@ -34,7 +34,16 @@ bool EditorScene3D::init()
 	_drawAABB->retain();
 	addChild(_drawAABB);
 	//add grid
-	auto grid = EditorGrid::create();
+	DrawNode3D * grid = DrawNode3D::create();
+	const size_t count(15);
+	constexpr float dist = count * 0.5;
+	const Color4F gridLineColor(Color4F::WHITE);
+	for (float i = 0; i <= count; ++i)
+	{
+		grid->drawLine(Vec3(-dist + i, 0, -dist), Vec3(-dist + i, 0, dist), gridLineColor);
+		grid->drawLine(Vec3(dist, 0, -dist + i), Vec3(-dist, 0, -dist + i), gridLineColor);
+	}
+	//auto grid = EditorGrid::create();
 	this->addChild(grid);
 	grid->setCameraMask(_currentCameraMask, true);
 
@@ -192,10 +201,10 @@ void EditorScene3D::createAndAddReferenceArrows()
 	sprite->setName("boss");
 	//sprite->setOpacity(254);
 	sprite->setScale(1.00f / sprite->getBoundingBox().size.width);//queremos con size 1
-	sprite->setPosition3D(Vec3(0, -sprite->getBoundingBox().size.height*0.5f, 0));
+	sprite->setPosition3D(Vec3(0, +sprite->getBoundingBox().size.height*0.5f + 0.1, 0));
 	auto width = sprite->getBoundingBox().size;
 	this->addChild(sprite);
-	
+
 	auto arrowSet = Sprite3D::create();
 	arrowSet->setName("ArrowSet");
 
@@ -226,9 +235,9 @@ void EditorScene3D::createAndAddReferenceArrows()
 
 	arrowSet->setPosition3D(Vec3(0, 0, 0));
 	//arrowSet->setGlobalZOrder(-1);
-	arrowX->setGlobalZOrder(1);
-	arrowY->setGlobalZOrder(2);
-	arrowZ->setGlobalZOrder(3);
-	sprite->setGlobalZOrder(4);
+	//arrowX->setGlobalZOrder(1);
+	//arrowY->setGlobalZOrder(2);
+	//arrowZ->setGlobalZOrder(3);
+	//sprite->setGlobalZOrder(4);
 	//addChild(arrowSet);
 }

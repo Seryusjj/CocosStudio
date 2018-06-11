@@ -2,7 +2,7 @@
 #define  _COCOS_GL_CANVAS_H_
 
 #include "stdafx.h"
-#include "CocosGLCanvasController.h"
+#include "AbstractCocosGLCanvasController.h"
 
 class EditorScene3D;
 
@@ -11,7 +11,7 @@ class CocosGLCanvas : public wxGLCanvas, public cocos2d::GLView
 public:
 	int  _retinaFactor;//1 or 0
 	float _frameZoomFactor;
-	CocosGLCanvas(wxWindow *parent, CocosGLCanvasController* controller, int *attribList = NULL);
+	CocosGLCanvas(wxWindow *parent, AbstractCocosGLCanvasController* controller, int *attribList = NULL);
 
 	/* override functions */
 	virtual bool isOpenGLReady() override;
@@ -29,7 +29,7 @@ public:
 #endif //(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 private:
-	CocosGLCanvasController* _controller;
+	AbstractCocosGLCanvasController* _controller;
 
 	void onResizeCanvas(float width, float height);
 	bool initGl();

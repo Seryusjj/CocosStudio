@@ -20,7 +20,7 @@ set(SRCS	main.cpp
 			CustomDockArt.cpp
 			CustomTabArt.h
 			CustomTabArt.cpp
-			CocosGLCanvasController.h			
+			AbstractCocosGLCanvasController.h			
 			CocosGLCanvas3DController.h
 			CocosGLCanvas3DController.cpp
 			CocosGLCanvas2DController.h
@@ -44,15 +44,18 @@ if(WIN32)
 	ADD_PRECOMPILED_HEADER(${PROJECT_NAME} stdafx.h [FORCEINCLUDE])
 	
 	set_target_properties (${PROJECT_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:windows")
+	
+	#copy cocos2d-x dll
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+									COMMAND ${CMAKE_COMMAND} -E copy_directory
+									${COCOS2D_LIB_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+									
 	#copy wxwidgets dll
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 									COMMAND ${CMAKE_COMMAND} -E copy_directory
 									${wxWidgets_LIB_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 								
-	#copy cocos2d-x dll
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-									COMMAND ${CMAKE_COMMAND} -E copy_directory
-									${COCOS2D_LIB_DIR} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
 	
 	target_link_libraries(${PROJECT_NAME} ${COCOS2D_LIBS} ${wxWidgets_LIBRARIES})
 else()

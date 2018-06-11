@@ -5,6 +5,7 @@ project(CocosStudio)
 set(CMAKE_BUILD_TYPE Debug)
 
 set(wxWidgets_CONFIGURATION "mswu")
+set(wxWidgets_EXCLUDE_COMMON_LIBRARIES FALSE)
 set(WX_USE_GL 1)
 set(BUILD_SHARED_LIBS on)
 set(CocosResources "${CMAKE_CURRENT_SOURCE_DIR}/Resources/CocosResources")

@@ -4,11 +4,14 @@
 #include "MyApp.h"
 #include "EditorScene3D.h"
 
-
 #if WIN32
-#pragma comment(linker,"\"/manifestdependency:type='win32' \
-name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
-processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#ifndef wxUSE_NO_MANIFEST
+#define wxUSE_NO_MANIFEST 1
+#endif // wxUSE_NO_MANIFEST
+
+#if defined(__WXMSW__) && !defined(__WXWINCE__)
+#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df'\"")
+#endif
 #endif
 
 wxIMPLEMENT_APP(MyApp);
@@ -33,7 +36,9 @@ bool MyApp::OnInit()
 	fileLocation = wxFileName(fileLocation).GetPath();
 	wxSetWorkingDirectory(fileLocation);
 
-	//wxInitAllImageHandlers();
+	//needed in order to use png file format
+	wxInitAllImageHandlers();
+
 	//needed on win32
 	cocos2d::FileUtils::getInstance()->addSearchPath("Resources");
 

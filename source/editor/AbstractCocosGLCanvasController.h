@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-class CocosGLCanvasController
+class AbstractCocosGLCanvasController
 {
 protected:
 	std::stack<cocos2d::Node*> _selection;

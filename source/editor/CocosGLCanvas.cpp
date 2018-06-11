@@ -212,7 +212,7 @@ void CocosGLCanvas::OnMouseMoveEvent(wxMouseEvent & event)
 	_controller->OnMouseMoveEvent(event);
 }
 
-CocosGLCanvas::CocosGLCanvas(wxWindow *parent, CocosGLCanvasController* controller, int *attribList)
+CocosGLCanvas::CocosGLCanvas(wxWindow *parent, AbstractCocosGLCanvasController* controller, int *attribList)
 	: wxGLCanvas(parent, wxID_ANY, attribList,
 		wxDefaultPosition, wxDefaultSize,
 		wxFULL_REPAINT_ON_RESIZE),
